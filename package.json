@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install",
+    "check-types": "tsc --pretty --noEmit",
+    "check-format": "prettier --check **/*.{ts,tsx}",
+    "check-lint": "eslint . --ext ts --ext tsx --ext js",
+    "format": "prettier --write **/*.{ts,tsx}",
+    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -19,5 +25,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "husky": "^8.0.3",
+    "prettier": "2.8.3"
   }
 }
