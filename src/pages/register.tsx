@@ -1,9 +1,21 @@
 import React from 'react';
 
 import { NextPage } from 'next';
+import Link from 'next/link';
+
+import { FaApple, FaFacebook } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
 import styled from '@emotion/styled';
-import { Box, Button, Grid, Stack, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Grid,
+    IconButton,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 
 const Background = styled.div`
     width: 100%;
@@ -55,6 +67,13 @@ const FilledTextField = styled(TextField)`
     & .MuiInputLabel-shrink {
         font-size: 18px;
     }
+`;
+
+const SocialIconButton = styled(IconButton)`
+    background-color: #fff;
+    border: 1px solid #e0e0e9;
+    box-shadow: 0px 18px 30px rgba(131, 119, 198, 0.11);
+    border-radius: 15px;
 `;
 
 const Register: NextPage = () => {
@@ -153,6 +172,52 @@ const Register: NextPage = () => {
                     >
                         {registerButtonLabel}
                     </Button>
+
+                    <Stack textAlign={'center'} spacing={3}>
+                        <Typography>או התחבר עם</Typography>
+
+                        <Stack
+                            direction={'row'}
+                            spacing={2}
+                            justifyContent={'center'}
+                            textAlign={'center'}
+                        >
+                            <SocialIconButton size={'large'}>
+                                <FaFacebook color={'#1877F2'} />
+                            </SocialIconButton>
+                            <SocialIconButton size={'large'}>
+                                <FcGoogle />
+                            </SocialIconButton>
+                            <SocialIconButton size={'large'}>
+                                <FaApple color={'#000'} />
+                            </SocialIconButton>
+                        </Stack>
+
+                        <Box
+                            sx={{
+                                columnGap: '2px',
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Typography
+                                display={'inline'}
+                                sx={{ textDecoration: 'none' }}
+                            >
+                                כבר יש לך חשבון?
+                            </Typography>
+                            <Link
+                                href={'/login'}
+                                style={{
+                                    color: '#232F3E',
+                                }}
+                            >
+                                <Typography display={'inline'}>
+                                    התחבר
+                                </Typography>
+                            </Link>
+                        </Box>
+                    </Stack>
                 </Stack>
             </Card>
         </Background>
