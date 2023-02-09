@@ -11,7 +11,7 @@ export const theme = createTheme({
         },
     },
     typography: {
-        fontFamily: 'open-sans',
+        fontFamily: 'Heebo, sans-serif',
     },
     components: {
         MuiButton: {
