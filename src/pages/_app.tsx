@@ -4,7 +4,7 @@ import '@/styles/globals.css';
 import { theme } from '@/styles/theme';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-import { ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
 
@@ -17,6 +17,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     return (
         <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
+                <CssBaseline enableColorScheme />
                 <Component {...pageProps} />
             </ThemeProvider>
         </CacheProvider>
