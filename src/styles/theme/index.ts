@@ -10,6 +10,9 @@ export const theme = createTheme({
             main: '#232F3E',
         },
     },
+    typography: {
+        fontFamily: 'open-sans',
+    },
     components: {
         MuiButton: {
             variants: [
