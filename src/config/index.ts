@@ -1,3 +1,4 @@
+import { getAuth } from '@firebase/auth';
 import { initializeApp } from 'firebase/app';
 
 const config = {
@@ -12,3 +13,4 @@ const config = {
 };
 
 export const app = initializeApp(config.firebase);
+export const auth = getAuth(app);
