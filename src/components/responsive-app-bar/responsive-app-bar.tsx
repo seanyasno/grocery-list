@@ -3,7 +3,6 @@ import React from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BiMenuAltLeft } from 'react-icons/bi';
 import { CiSearch } from 'react-icons/ci';
-import { FiMenu } from 'react-icons/fi';
 import { FiShoppingCart } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { RiUser3Line } from 'react-icons/ri';
@@ -16,7 +15,6 @@ import {
     AppBar,
     Box,
     Button,
-    Container,
     IconButton,
     InputBase,
     Menu,
@@ -36,7 +34,6 @@ const Search = styled('div')(() => ({
     marginLeft: 0,
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        // width: 'fit-content',
     },
     width: '60%',
     display: 'flex',
@@ -69,13 +66,9 @@ const StyledInputBase = styled(InputBase)(() => ({
     width: '100%',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        // [theme.breakpoints.up('md')]: {
-        //     width: '20ch',
-        // },
     },
 }));
 
