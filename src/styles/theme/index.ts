@@ -22,7 +22,22 @@ export const theme = createTheme({
                         borderRadius: '4px',
                     },
                 },
+                {
+                    props: { variant: 'text' },
+                    style: {
+                        color: '#666666',
+                        textTransform: 'none',
+                        fontWeight: 400,
+                    },
+                },
             ],
+        },
+        MuiAppBar: {
+            styleOverrides: {
+                colorDefault: {
+                    backgroundColor: '#fff',
+                },
+            },
         },
     },
 });
