@@ -11,11 +11,26 @@ import {
     SubmitButton,
     Title,
 } from '@/features/registration';
-import { Button, Grid, Stack } from '@mui/material';
+import { useAuthValidation } from '@/hooks';
+import { Grid, Stack } from '@mui/material';
 
 const Register: NextPage = () => {
     const title = 'צור חשבון חדש';
     const registerButtonLabel = 'הירשם';
+
+    const { loading, error } = useAuthValidation();
+
+    if (error) {
+        return (
+            <div>
+                <p>Error: {error.message}</p>
+            </div>
+        );
+    }
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <Background>

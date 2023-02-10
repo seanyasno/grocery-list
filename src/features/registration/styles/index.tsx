@@ -61,4 +61,9 @@ export const SocialIconButton = styled(IconButton)`
     border: 1px solid #e0e0e9;
     box-shadow: 0px 18px 30px rgba(131, 119, 198, 0.11);
     border-radius: 15px;
+
+    &.MuiIconButton-root:hover {
+        background-color: #ffffffaa;
+        border: 1px solid #e0e0e9aa;
+    }
 `;

@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 
-import { auth } from '@/config';
 import {
     Background,
     BottomSection,
@@ -13,51 +11,19 @@ import {
     SubmitButton,
     Title,
 } from '@/features/registration';
+import { useLoginForm } from '@/features/registration/hooks';
 import { useAuthValidation } from '@/hooks';
 import { Button, Grid, Stack } from '@mui/material';
-import { useFormik } from 'formik';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-
-type LoginInfo = {
-    email: string;
-    password: string;
-};
 
 const Login: NextPage = () => {
     const title = 'התחברות';
     const loginButtonLabel = 'התחבר';
+    const forgotPasswordButtonLabel = 'שכחת סיסמה?';
+    const emailLabel = 'אימייל';
+    const passwordLabel = 'סיסמה';
 
-    const { user, loading, error } = useAuthValidation();
-    const [signInWithEmailAndPassword, loadingUser] =
-        useSignInWithEmailAndPassword(auth);
-
-    const { values, handleChange, handleSubmit, errors } = useFormik<LoginInfo>(
-        {
-            initialValues: {
-                email: '',
-                password: '',
-            },
-            onSubmit: ({ email, password }) =>
-                signInWithEmailAndPassword(email, password),
-            validate: ({ email, password }) => {
-                const errors: Partial<LoginInfo> = {};
-
-                if (!email) {
-                    errors.email = 'Required';
-                } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
-                ) {
-                    errors.email = 'Invalid email address';
-                }
-
-                if (!password) {
-                    errors.password = 'Required';
-                }
-
-                return errors;
-            },
-        }
-    );
+    const { loading, error } = useAuthValidation();
+    const { values, handleChange, handleSubmit, errors } = useLoginForm();
 
     if (error) {
         return (
@@ -67,16 +33,8 @@ const Login: NextPage = () => {
         );
     }
 
-    if (loading || loadingUser) {
+    if (loading) {
         return <p>Loading...</p>;
-    }
-
-    if (user) {
-        return (
-            <div>
-                <p>Signed In User: {user.email}</p>
-            </div>
-        );
     }
 
     return (
@@ -93,7 +51,7 @@ const Login: NextPage = () => {
                                     onChange={handleChange}
                                     error={!!errors.email}
                                     variant={'filled'}
-                                    label={'אימייל'}
+                                    label={emailLabel}
                                     fullWidth
                                     InputProps={{ disableUnderline: true }}
                                 />
@@ -106,7 +64,7 @@ const Login: NextPage = () => {
                                     error={!!errors.password}
                                     type={'password'}
                                     variant={'filled'}
-                                    label={'סיסמה'}
+                                    label={passwordLabel}
                                     fullWidth
                                     InputProps={{ disableUnderline: true }}
                                 />
@@ -114,7 +72,7 @@ const Login: NextPage = () => {
                                     variant={'text'}
                                     sx={{ color: 'white' }}
                                 >
-                                    שכחת סיסמה?
+                                    {forgotPasswordButtonLabel}
                                 </Button>
                             </Grid>
                         </Grid>
