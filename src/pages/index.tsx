@@ -2,7 +2,9 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 import { Footer, ResponsiveAppBar } from '@/components';
+import { GroceryItemCard } from '@/features/grocery-item';
 import styles from '@/styles/Home.module.css';
+import { Grid } from '@mui/material';
 import { Inter } from '@next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -26,15 +28,28 @@ export default function Home() {
             <ResponsiveAppBar />
 
             <main className={styles.main}>
-                <div className={styles.description}>
-                    <div>
-                        <a
-                            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        ></a>
-                    </div>
-                </div>
+                <Grid container spacing={2}>
+                    <Grid item xs={6} sm={3}>
+                        <GroceryItemCard
+                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
+                        />
+                    </Grid>
+                    <Grid item xs={6} sm={3}>
+                        <GroceryItemCard
+                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
+                        />
+                    </Grid>
+                    <Grid item xs={6} sm={3}>
+                        <GroceryItemCard
+                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
+                        />
+                    </Grid>
+                    <Grid item xs={6} sm={3}>
+                        <GroceryItemCard
+                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
+                        />
+                    </Grid>
+                </Grid>
             </main>
 
             <Footer />
