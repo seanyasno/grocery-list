@@ -177,9 +177,8 @@ export const ResponsiveAppBar: React.FC = () => {
                         }}
                     >
                         {pages.map(({ title, icon }, index) => (
-                            <>
+                            <React.Fragment key={index}>
                                 <Button
-                                    key={index}
                                     onClick={handleCloseNavMenu}
                                     variant={'text'}
                                     sx={{
@@ -203,7 +202,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                         }}
                                     />
                                 )}
-                            </>
+                            </React.Fragment>
                         ))}
                     </Box>
 
