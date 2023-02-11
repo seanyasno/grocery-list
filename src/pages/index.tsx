@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { ResponsiveAppBar } from '@/components';
+import { Footer, ResponsiveAppBar } from '@/components';
 import styles from '@/styles/Home.module.css';
 import { Inter } from '@next/font/google';
 
@@ -32,20 +32,12 @@ export default function Home() {
                             href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
                             target="_blank"
                             rel="noopener noreferrer"
-                        >
-                            By{' '}
-                            <Image
-                                src="/vercel.svg"
-                                alt="Vercel Logo"
-                                className={styles.vercelLogo}
-                                width={100}
-                                height={24}
-                                priority
-                            />
-                        </a>
+                        ></a>
                     </div>
                 </div>
             </main>
+
+            <Footer />
         </>
     );
 }
