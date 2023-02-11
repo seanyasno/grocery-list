@@ -3,8 +3,9 @@ import React from 'react';
 import { BsTelephone } from 'react-icons/bs';
 import { FaWhatsapp } from 'react-icons/fa';
 
+import { FooterItem, FooterTitle } from '@/components/footer/components';
 import { theme } from '@/styles/theme';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 
 export const Footer: React.FC = () => {
     const companyName = 'כותרת גדולה';
@@ -16,12 +17,18 @@ export const Footer: React.FC = () => {
             component={'footer'}
             bgcolor={theme.palette.secondary.main}
             padding={'80px 120px'}
+            rowSpacing={6}
+            sx={{
+                [theme.breakpoints.down('md')]: {
+                    padding: '40px 60px',
+                },
+            }}
         >
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={4}>
                 <Typography
                     color={'primary'}
                     fontWeight={800}
-                    fontSize={'22px'}
+                    fontSize={'26px'}
                 >
                     {companyName}
                 </Typography>
@@ -29,7 +36,7 @@ export const Footer: React.FC = () => {
                 <Typography
                     fontSize={'20px'}
                     color={'white'}
-                    mt={'30px'}
+                    mt={'20px'}
                     mb={'20px'}
                 >
                     צור קשר
@@ -78,6 +85,27 @@ export const Footer: React.FC = () => {
                 <Typography color={'white'} fontSize={'16px'}>
                     {phoneNumber}
                 </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={4}>
+                <FooterTitle title={'אודות השירות'} />
+
+                <Stack spacing={1} ml={'14px'}>
+                    <FooterItem title={'תקנון ותנאי השימוש'} />
+                    <FooterItem title={'מדיניות פרטיות'} />
+                </Stack>
+            </Grid>
+
+            <Grid item xs={12} sm={4}>
+                <FooterTitle title={'קטגוריות פופלואריות'} />
+
+                <Stack spacing={1} ml={'14px'}>
+                    <FooterItem title={'פירות'} />
+                    <FooterItem title={'ירקות'} />
+                    <FooterItem title={'חלב וביצים'} />
+                    <FooterItem title={'בשר ודגים'} />
+                    <FooterItem title={'קפואים'} />
+                </Stack>
             </Grid>
         </Grid>
     );
