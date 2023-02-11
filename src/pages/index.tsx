@@ -1,13 +1,17 @@
 import Head from 'next/head';
-import Image from 'next/image';
 
 import { Footer, ResponsiveAppBar } from '@/components';
-import { GroceryItemCard } from '@/features/grocery-item';
+import { GroceriesCardsList } from '@/features/grocery-item';
 import styles from '@/styles/Home.module.css';
-import { Grid } from '@mui/material';
-import { Inter } from '@next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+const groceries = [
+    { name: 'תפוח', price: 1.99, id: '' },
+    { name: 'ענבים', price: 2.99, id: '' },
+    { name: 'קוקה קולה', price: 3.99, id: '' },
+    { name: 'מיץ תפוזים', price: 5.99, id: '' },
+    { name: 'אוריאו', price: 9.99, id: '' },
+    { name: 'עוף', price: 6.99, id: '' },
+];
 
 export default function Home() {
     return (
@@ -28,28 +32,7 @@ export default function Home() {
             <ResponsiveAppBar />
 
             <main className={styles.main}>
-                <Grid container spacing={2}>
-                    <Grid item xs={6} sm={3}>
-                        <GroceryItemCard
-                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
-                        />
-                    </Grid>
-                    <Grid item xs={6} sm={3}>
-                        <GroceryItemCard
-                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
-                        />
-                    </Grid>
-                    <Grid item xs={6} sm={3}>
-                        <GroceryItemCard
-                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
-                        />
-                    </Grid>
-                    <Grid item xs={6} sm={3}>
-                        <GroceryItemCard
-                            grocery={{ name: 'תפוח', price: 1.99, id: '' }}
-                        />
-                    </Grid>
-                </Grid>
+                <GroceriesCardsList groceries={groceries} />
             </main>
 
             <Footer />
