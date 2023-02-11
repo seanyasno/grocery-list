@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { ResponsiveAppBar } from '@/components';
+import { Footer, ResponsiveAppBar } from '@/components';
 import styles from '@/styles/Home.module.css';
 import { Inter } from '@next/font/google';
 
@@ -46,6 +46,8 @@ export default function Home() {
                     </div>
                 </div>
             </main>
+
+            <Footer />
         </>
     );
 }
