@@ -1,14 +1,19 @@
+import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { Button, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 
-export const Background = styled.div`
+export const Background = styled(Box)`
     width: 100%;
     height: 100vh;
     background-color: #232f3e;
     padding: 54px 117px;
+    ${theme.breakpoints.down('md')} {
+        padding: 0;
+        height: unset;
+    }
 `;
 
-export const FormCard = styled.div`
+export const FormCard = styled(Box)`
     width: 100%;
     height: 100%;
     background-image: linear-gradient(
@@ -22,6 +27,17 @@ export const FormCard = styled.div`
     background-size: auto 100%;
     padding: 50px 62px;
     display: flex;
+    ${theme.breakpoints.down('md')} {
+        border-radius: 0;
+        background-image: linear-gradient(
+                270deg,
+                #ff9a00 -23.83%,
+                rgba(255, 154, 0, 0.68) 100%
+            ),
+            url('/images/karsten-winegeart-4bC1Ef88OYI-unsplash 1.webp');
+        background-size: cover;
+        height: 367px;
+    }
 `;
 
 export const SubmitButton = styled(Button)`
@@ -54,6 +70,11 @@ export const Title = styled(Typography)`
     color: #fff;
     font-size: 44px;
     margin-bottom: 18px;
+
+    ${theme.breakpoints.down('md')} {
+        font-size: 24px;
+        font-weight: 600;
+    }
 `;
 
 export const SocialIconButton = styled(IconButton)`
