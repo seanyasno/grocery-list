@@ -16,11 +16,11 @@ export const Footer: React.FC = () => {
             container
             component={'footer'}
             bgcolor={theme.palette.secondary.main}
-            padding={'80px 120px'}
+            padding={'60px 120px'}
             rowSpacing={6}
             sx={{
                 [theme.breakpoints.down('md')]: {
-                    padding: '40px 60px',
+                    padding: '20px 60px',
                 },
             }}
         >
