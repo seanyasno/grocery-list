@@ -36,7 +36,7 @@ export default function Home() {
             <main className={styles.main}>
                 <Box
                     sx={{
-                        [theme.breakpoints.up('xs')]: {
+                        [theme.breakpoints.up('sm')]: {
                             padding: '30px',
                         },
                     }}

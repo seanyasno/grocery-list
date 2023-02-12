@@ -1,6 +1,6 @@
-export const currencyFormatter = new Intl.NumberFormat('he-IL', {
-    style: 'currency',
-    currency: 'ILS',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+import { FormatMoney } from 'format-money-js';
+
+export const currencyFormatter = new FormatMoney({
+    decimals: 2,
+    symbol: '₪',
 });
