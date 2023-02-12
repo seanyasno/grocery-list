@@ -5,6 +5,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 
 import { Grocery } from '@/abstraction';
 import { theme } from '@/styles/theme';
+import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
 import { Box, Button, Card, Grid, IconButton, Typography } from '@mui/material';
 
@@ -76,7 +77,7 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
                         fontWeight={600}
                         color={'primary'}
                     >
-                        {grocery.price}
+                        {currencyFormatter.format(grocery.price)}
                     </Typography>
                 </Grid>
 

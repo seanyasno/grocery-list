@@ -3,11 +3,13 @@ import Head from 'next/head';
 import { Footer, ResponsiveAppBar } from '@/components';
 import { GroceriesCardsList } from '@/features/grocery-item';
 import styles from '@/styles/Home.module.css';
+import { theme } from '@/styles/theme';
+import { Box } from '@mui/material';
 
 const groceries = [
-    { name: 'תפוח', price: 1.99, id: '' },
+    { name: 'תפוח', price: 1.9, id: '' },
     { name: 'ענבים', price: 2.99, id: '' },
-    { name: 'קוקה קולה', price: 3.99, id: '' },
+    { name: 'קוקה קולה', price: 3.0, id: '' },
     { name: 'מיץ תפוזים', price: 5.99, id: '' },
     { name: 'אוריאו', price: 9.99, id: '' },
     { name: 'עוף', price: 6.99, id: '' },
@@ -32,7 +34,15 @@ export default function Home() {
             <ResponsiveAppBar />
 
             <main className={styles.main}>
-                <GroceriesCardsList groceries={groceries} />
+                <Box
+                    sx={{
+                        [theme.breakpoints.up('xs')]: {
+                            padding: '30px',
+                        },
+                    }}
+                >
+                    <GroceriesCardsList groceries={groceries} />
+                </Box>
             </main>
 
             <Footer />
