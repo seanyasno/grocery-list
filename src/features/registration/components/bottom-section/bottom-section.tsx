@@ -10,14 +10,24 @@ type Props = {
     bottomLinkLabel?: string;
     children?: React.ReactNode;
     href: string;
+    labelColor?: string;
+    bottomLinkColor?: string;
 };
 
 export const BottomSection: React.FC<Props> = (props) => {
-    const { topLabel, bottomLabel, bottomLinkLabel, children, href } = props;
+    const {
+        topLabel,
+        bottomLabel,
+        bottomLinkLabel,
+        children,
+        href,
+        bottomLinkColor,
+        labelColor,
+    } = props;
 
     return (
         <Stack textAlign={'center'} spacing={3}>
-            <Typography>{topLabel}</Typography>
+            <Typography color={labelColor}>{topLabel}</Typography>
 
             {children}
 
@@ -28,16 +38,20 @@ export const BottomSection: React.FC<Props> = (props) => {
                     justifyContent: 'center',
                 }}
             >
-                <Typography display={'inline'} sx={{ textDecoration: 'none' }}>
+                <Typography
+                    color={bottomLinkColor}
+                    display={'inline'}
+                    sx={{ textDecoration: 'none' }}
+                >
                     {bottomLabel}
                 </Typography>
                 <Link
                     href={href}
                     style={{
-                        color: '#232F3E',
+                        color: bottomLinkColor ?? '#232F3E',
                     }}
                 >
-                    <Typography display={'inline'}>
+                    <Typography display={'inline'} color={bottomLinkColor}>
                         {bottomLinkLabel}
                     </Typography>
                 </Link>
