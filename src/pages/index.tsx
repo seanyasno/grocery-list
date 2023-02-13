@@ -1,11 +1,19 @@
 import Head from 'next/head';
-import Image from 'next/image';
 
 import { Footer, ResponsiveAppBar } from '@/components';
+import { GroceriesCardsList } from '@/features/grocery-item';
 import styles from '@/styles/Home.module.css';
-import { Inter } from '@next/font/google';
+import { theme } from '@/styles/theme';
+import { Box } from '@mui/material';
 
-const inter = Inter({ subsets: ['latin'] });
+const groceries = [
+    { name: 'תפוח', price: 1.9, id: '' },
+    { name: 'ענבים', price: 2.99, id: '' },
+    { name: 'קוקה קולה', price: 3.0, id: '' },
+    { name: 'מיץ תפוזים', price: 5.99, id: '' },
+    { name: 'אוריאו', price: 9.99, id: '' },
+    { name: 'עוף', price: 6.99, id: '' },
+];
 
 export default function Home() {
     return (
@@ -26,15 +34,15 @@ export default function Home() {
             <ResponsiveAppBar />
 
             <main className={styles.main}>
-                <div className={styles.description}>
-                    <div>
-                        <a
-                            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        ></a>
-                    </div>
-                </div>
+                <Box
+                    sx={{
+                        [theme.breakpoints.up('sm')]: {
+                            padding: '30px',
+                        },
+                    }}
+                >
+                    <GroceriesCardsList groceries={groceries} />
+                </Box>
             </main>
 
             <Footer />
