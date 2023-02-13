@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
 import { Footer, ResponsiveAppBar } from '@/components';
+import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
 import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
@@ -41,6 +42,15 @@ export default function Home() {
                         },
                     }}
                 >
+                    <Box
+                        sx={{
+                            marginBottom: '40px',
+                            width: '100%',
+                            display: 'flex',
+                        }}
+                    >
+                        <GroceriesCategoriesList />
+                    </Box>
                     <GroceriesCardsList groceries={groceries} />
                 </Box>
             </main>
