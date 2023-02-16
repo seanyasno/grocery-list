@@ -36,8 +36,8 @@ export const SearchBar: React.FC = () => {
                     <CiSearch color={theme.palette.primary.main} size={20} />
                 </SearchIconWrapper>
                 <Autocomplete
-                    freeSolo
                     fullWidth
+                    noOptionsText={'לא נמצאו תוצאות'}
                     renderInput={(params) => (
                         <StyledInputBase
                             ref={params.InputProps.ref}
@@ -73,7 +73,7 @@ export const SearchBar: React.FC = () => {
             >
                 <GroceryItemCard
                     grocery={{
-                        id: selectedGrocery?.code,
+                        id: selectedGrocery?.id,
                         name: selectedGrocery?.name,
                         price: Number(bestSelectedGrocery?.PRICE ?? '0'),
                     }}

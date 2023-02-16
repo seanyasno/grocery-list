@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { Grocery } from '@/abstraction';
+import { ShoppingCartContext } from '@/contexts';
 import { currencyFormatter } from '@/utils';
 import { Grid, IconButton, Typography } from '@mui/material';
 
@@ -22,6 +23,27 @@ type Props = {
 
 export const GroceryItemCard: React.FC<Props> = (props) => {
     const { grocery } = props;
+    const { addGrocery } = useContext(ShoppingCartContext);
+    const [amountToAdd, setAmountToAdd] = useState(0);
+
+    const handleIncrease = useCallback(() => {
+        setAmountToAdd((prev) => prev + 1);
+    }, []);
+
+    const handleDecrease = useCallback(() => {
+        setAmountToAdd((prev) => {
+            if (prev === 0) {
+                return prev;
+            }
+
+            return prev - 1;
+        });
+    }, []);
+
+    const handleAddToCart = useCallback(() => {
+        addGrocery(grocery, amountToAdd);
+        setAmountToAdd(0);
+    }, [addGrocery, grocery, amountToAdd]);
 
     return (
         <StyledCard elevation={0}>
@@ -48,19 +70,23 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
 
                 <Grid item xs={12} sm={6}>
                     <StyledAmount>
-                        <IconButton>
+                        <IconButton onClick={handleIncrease}>
                             <BiPlus color={'white'}>+</BiPlus>
                         </IconButton>
                         <Typography variant={'h6'} color={'secondary'}>
-                            1
+                            {amountToAdd}
                         </Typography>
-                        <IconButton>
+                        <IconButton onClick={handleDecrease}>
                             <BiMinus color={'white'}>-</BiMinus>
                         </IconButton>
                     </StyledAmount>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <AddToCartButton variant={'contained'} fullWidth>
+                    <AddToCartButton
+                        variant={'contained'}
+                        fullWidth
+                        onClick={handleAddToCart}
+                    >
                         <FiShoppingCart color={'white'} size={20} />
                     </AddToCartButton>
                 </Grid>

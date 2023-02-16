@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
 import { Footer, ResponsiveAppBar } from '@/components';
+import { ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
 import styles from '@/styles/Home.module.css';
@@ -8,12 +9,12 @@ import { theme } from '@/styles/theme';
 import { Box } from '@mui/material';
 
 const groceries = [
-    { name: 'תפוח', price: 1.9, id: '' },
-    { name: 'ענבים', price: 2.99, id: '' },
-    { name: 'קוקה קולה', price: 3.0, id: '' },
-    { name: 'מיץ תפוזים', price: 5.99, id: '' },
-    { name: 'אוריאו', price: 9.99, id: '' },
-    { name: 'עוף', price: 6.99, id: '' },
+    { name: 'תפוח', price: 1.9, id: 'a' },
+    { name: 'ענבים', price: 2.99, id: 'b' },
+    { name: 'קוקה קולה', price: 3.0, id: 'c' },
+    { name: 'מיץ תפוזים', price: 5.99, id: 'd' },
+    { name: 'אוריאו', price: 9.99, id: 'e' },
+    { name: 'עוף', price: 6.99, id: 'f' },
 ];
 
 export default function Home() {
@@ -32,28 +33,30 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ResponsiveAppBar />
+            <ShoppingCartProvider>
+                <ResponsiveAppBar />
 
-            <main className={styles.main}>
-                <Box
-                    sx={{
-                        [theme.breakpoints.up('sm')]: {
-                            padding: '30px',
-                        },
-                    }}
-                >
+                <main className={styles.main}>
                     <Box
                         sx={{
-                            marginBottom: '40px',
-                            width: '100%',
-                            display: 'flex',
+                            [theme.breakpoints.up('sm')]: {
+                                padding: '30px',
+                            },
                         }}
                     >
-                        <GroceriesCategoriesList />
+                        <Box
+                            sx={{
+                                marginBottom: '40px',
+                                width: '100%',
+                                display: 'flex',
+                            }}
+                        >
+                            <GroceriesCategoriesList />
+                        </Box>
+                        <GroceriesCardsList groceries={groceries} />
                     </Box>
-                    <GroceriesCardsList groceries={groceries} />
-                </Box>
-            </main>
+                </main>
+            </ShoppingCartProvider>
 
             <Footer />
         </>

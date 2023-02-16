@@ -11,6 +11,7 @@ export const useBestGroceryPrice = (id: string) => {
                 return response.data?.contents?.search_results?.[0];
             } catch (error) {
                 console.error(error);
+                return null;
             }
         },
         enabled: !isEmpty(id),
