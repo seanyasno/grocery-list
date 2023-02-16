@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { BiMenuAltLeft } from 'react-icons/bi';
 import { CiSearch } from 'react-icons/ci';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -8,68 +7,18 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { RiUser3Line } from 'react-icons/ri';
 import { TbClipboardList } from 'react-icons/tb';
 
+import { SearchBar } from '@/features/groceries-search';
 import { theme } from '@/styles/theme';
-import styled from '@emotion/styled';
 import {
-    alpha,
     AppBar,
     Box,
     Button,
     IconButton,
-    InputBase,
     Menu,
     MenuItem,
     Toolbar,
     Typography,
 } from '@mui/material';
-
-const Search = styled('div')(() => ({
-    position: 'relative',
-    borderRadius: '10px',
-    backgroundColor: '#F8F8F8',
-    '&:hover': {
-        backgroundColor: alpha('#F8F8F8', 0.75),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-    },
-    width: '60%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-}));
-
-const SearchIconWrapper = styled('div')(() => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const ListIconWrapper = styled('div')(() => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(() => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-    },
-}));
 
 type PageItem = {
     title: string;
@@ -150,24 +99,7 @@ export const ResponsiveAppBar: React.FC = () => {
                             justifyContent: 'center',
                         }}
                     >
-                        <Search>
-                            <SearchIconWrapper>
-                                <CiSearch
-                                    color={theme.palette.primary.main}
-                                    size={20}
-                                />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="חפש מוצרים…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                            <ListIconWrapper>
-                                <AiOutlineUnorderedList
-                                    color={theme.palette.primary.main}
-                                    size={20}
-                                />
-                            </ListIconWrapper>
-                        </Search>
+                        <SearchBar />
                     </Box>
 
                     <Box

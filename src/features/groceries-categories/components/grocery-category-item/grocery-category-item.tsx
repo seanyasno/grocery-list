@@ -33,12 +33,12 @@ export const GroceryCategoryItem: React.FC<Props> = (props) => {
                 <Image
                     src={imageSrc}
                     alt={name}
-                    // width={40}
                     layout={'fill'}
                     style={{
                         padding: '16px',
                     }}
                     objectFit={'contain'}
+                    sizes={'100%'}
                 />
             </StyledIconButton>
             <Typography mt={'12px'} fontSize={'16px'} fontWeight={400}>

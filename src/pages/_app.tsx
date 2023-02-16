@@ -6,6 +6,7 @@ import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Heebo } from '@next/font/google';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
 
@@ -16,13 +17,23 @@ const cacheRtl = createCache({
     stylisPlugins: [prefixer, rtlPlugin],
 });
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+        },
+    },
+});
+
 const App = ({ Component, pageProps }: AppProps) => {
     return (
         <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
                 <CssBaseline enableColorScheme />
                 <main className={heebo.className}>
-                    <Component {...pageProps} />
+                    <QueryClientProvider client={queryClient}>
+                        <Component {...pageProps} />
+                    </QueryClientProvider>
                 </main>
             </ThemeProvider>
         </CacheProvider>
