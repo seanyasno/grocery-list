@@ -42,7 +42,7 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
                         fontWeight={600}
                         color={'primary'}
                     >
-                        {currencyFormatter.from(grocery.price).toString()}
+                        {currencyFormatter.from(grocery.price)?.toString()}
                     </Typography>
                 </InfoGrid>
 
