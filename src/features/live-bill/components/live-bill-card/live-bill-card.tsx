@@ -1,0 +1,69 @@
+import React, { useContext } from 'react';
+
+import { FiShoppingCart } from 'react-icons/fi';
+
+import { ShoppingCartContext } from '@/contexts';
+import { currencyFormatter } from '@/utils';
+import styled from '@emotion/styled';
+import { Button, Stack, Typography } from '@mui/material';
+
+export const StyledContainer = styled.div<{ expanded: boolean }>`
+    display: flex;
+    width: max-content;
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.11);
+    border-radius: 16px;
+    padding: 25px;
+    min-width: 395px;
+    height: ${({ expanded }) => (expanded ? '100%' : 'unset')};
+`;
+
+type Props = {
+    expanded?: boolean;
+};
+
+export const LiveBillCard: React.FC<Props> = (props) => {
+    const { expanded } = props;
+    const { totalPrice } = useContext(ShoppingCartContext);
+
+    const buttonLabel = 'ללכת לעגלה';
+
+    return (
+        <StyledContainer expanded={expanded}>
+            <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                display={'flex'}
+                sx={{ width: '100%' }}
+            >
+                <Stack display={'flex'}>
+                    <Typography color={'#7C8694'} sx={{ lineHeight: '20px' }}>
+                        שווי עגלת קניות
+                    </Typography>
+                    <Typography
+                        color={'primary'}
+                        fontSize={'22px'}
+                        fontWeight={600}
+                        sx={{ lineHeight: '28px' }}
+                    >
+                        {currencyFormatter.from(totalPrice)?.toString()}
+                    </Typography>
+                </Stack>
+
+                <Button
+                    variant={'contained'}
+                    sx={{
+                        columnGap: '10px',
+                        display: 'flex',
+                        boxShadow: 'none',
+                        fontWeight: 600,
+                        height: 'max-content',
+                        padding: '10px 20px',
+                    }}
+                >
+                    <FiShoppingCart size={22} />
+                    {buttonLabel}
+                </Button>
+            </Stack>
+        </StyledContainer>
+    );
+};

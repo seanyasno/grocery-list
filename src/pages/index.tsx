@@ -1,12 +1,15 @@
+import { useState } from 'react';
+
 import Head from 'next/head';
 
 import { Footer, ResponsiveAppBar } from '@/components';
 import { ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
+import { LiveBillCard } from '@/features/live-bill';
 import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
-import { Box } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 
 const groceries = [
     { name: 'תפוח', price: 1.9, id: 'a' },
@@ -18,6 +21,8 @@ const groceries = [
 ];
 
 export default function Home() {
+    const [layout, setLayout] = useState(2);
+
     return (
         <>
             <Head>
@@ -44,16 +49,56 @@ export default function Home() {
                             },
                         }}
                     >
-                        <Box
-                            sx={{
-                                marginBottom: '40px',
-                                width: '100%',
-                                display: 'flex',
-                            }}
+                        <Button
+                            variant="contained"
+                            onClick={() =>
+                                setLayout((prev) => (prev === 1 ? 2 : 1))
+                            }
                         >
-                            <GroceriesCategoriesList />
-                        </Box>
-                        <GroceriesCardsList groceries={groceries} />
+                            Test
+                        </Button>
+
+                        <Grid container columnSpacing={3}>
+                            <Grid item xs={layout === 1 ? 12 : true}>
+                                <Grid container spacing={3} display={'flex'}>
+                                    <Grid
+                                        item
+                                        xs={layout === 1 ? true : 12}
+                                        flexGrow={1}
+                                        flex={1}
+                                    >
+                                        <Box
+                                            sx={{
+                                                marginBottom: '40px',
+                                                width: '100%',
+                                                display: 'flex',
+                                            }}
+                                        >
+                                            <GroceriesCategoriesList />
+                                        </Box>
+                                    </Grid>
+
+                                    {layout === 1 && (
+                                        <Grid item>
+                                            <LiveBillCard />
+                                        </Grid>
+                                    )}
+
+                                    <Grid item>
+                                        <GroceriesCardsList
+                                            groceries={groceries}
+                                            shrink={layout !== 1}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            {layout !== 1 && (
+                                <Grid item>
+                                    <LiveBillCard expanded={layout !== 1} />
+                                </Grid>
+                            )}
+                        </Grid>
                     </Box>
                 </main>
             </ShoppingCartProvider>

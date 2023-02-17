@@ -1,4 +1,10 @@
-import { createContext, PropsWithChildren, useCallback, useState } from 'react';
+import {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react';
 import React from 'react';
 
 import { CartItem, Grocery } from '@/abstraction';
@@ -6,6 +12,7 @@ import { cloneWith } from 'lodash';
 
 type ContextProps = {
     cart: CartItem[];
+    totalPrice: number;
 
     addGrocery: (grocery: Grocery, amount: number) => void;
     removeGrocery: (id: string) => void;
@@ -14,6 +21,7 @@ type ContextProps = {
 
 export const ShoppingCartContext = createContext<ContextProps>({
     cart: [],
+    totalPrice: 0,
     addGrocery: (grocery: Grocery) => {},
     removeGrocery: (id: string) => {},
     getAmountOfGrocery: (id: string) => 0,
@@ -27,6 +35,14 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
     const { children } = props;
 
     const [cart, setCart] = useState<CartItem[]>([]);
+
+    const totalPrice = useMemo(
+        () =>
+            cart.reduce((acc, { grocery, amount }) => {
+                return acc + grocery.price * amount;
+            }, 0),
+        [cart]
+    );
 
     const addGrocery = useCallback(
         (grocery: Grocery, amount: number) => {
@@ -75,6 +91,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
         <ShoppingCartContext.Provider
             value={{
                 cart,
+                totalPrice,
                 addGrocery,
                 removeGrocery,
                 getAmountOfGrocery,
