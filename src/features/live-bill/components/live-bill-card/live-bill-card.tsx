@@ -3,9 +3,10 @@ import React, { useContext } from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { ShoppingCartContext } from '@/contexts';
+import { LiveBillItem, LiveBillList } from '@/features/live-bill';
 import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Collapse, Stack, Typography } from '@mui/material';
 
 export const StyledContainer = styled.div<{ expanded: boolean }>`
     display: flex;
@@ -15,6 +16,7 @@ export const StyledContainer = styled.div<{ expanded: boolean }>`
     padding: 25px;
     min-width: 395px;
     height: ${({ expanded }) => (expanded ? '100%' : 'unset')};
+    flex-direction: column;
 `;
 
 type Props = {
@@ -64,6 +66,10 @@ export const LiveBillCard: React.FC<Props> = (props) => {
                     {buttonLabel}
                 </Button>
             </Stack>
+
+            <Collapse in={expanded} timeout={'auto'} unmountOnExit>
+                <LiveBillList />
+            </Collapse>
         </StyledContainer>
     );
 };

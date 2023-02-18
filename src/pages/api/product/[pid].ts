@@ -13,12 +13,16 @@ export default async function handler(
 ) {
     const { pid } = req.query;
 
+    console.log('products pid', pid);
+
     try {
         const response = await chpInstance.get('/product', {
             params: {
                 product: pid,
             },
         });
+
+        console.log('products response', response.data);
         res.status(200).json(response.data);
     } catch (error) {
         res.status(400).json({ error });

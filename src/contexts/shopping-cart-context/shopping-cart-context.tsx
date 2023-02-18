@@ -65,8 +65,9 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
             const existingGrocery = cart.find((g) => g.grocery.id === id);
 
             if (existingGrocery) {
-                existingGrocery.amount -= 1;
-                setCart([...cart]);
+                setCart((prevCart) =>
+                    prevCart.filter((item) => item.grocery.id !== id)
+                );
             }
         },
         [cart]
