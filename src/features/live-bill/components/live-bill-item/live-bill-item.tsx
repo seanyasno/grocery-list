@@ -27,7 +27,7 @@ export const LiveBillItem: React.FC<Props> = (props) => {
     }, [cartItem, removeGrocery]);
 
     return (
-        <>
+        <Box>
             <Stack
                 direction={'row'}
                 sx={{
@@ -131,6 +131,6 @@ export const LiveBillItem: React.FC<Props> = (props) => {
                     marginTop: '20px',
                 }}
             />
-        </>
+        </Box>
     );
 };

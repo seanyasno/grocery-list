@@ -3,13 +3,13 @@ import React, { useContext } from 'react';
 import { ShoppingCartContext } from '@/contexts';
 import { LiveBillItem } from '@/features/live-bill';
 import { currencyFormatter } from '@/utils';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 
 export const LiveBillList: React.FC = () => {
     const { cart, totalPrice } = useContext(ShoppingCartContext);
 
     return (
-        <Box>
+        <Stack sx={{ height: '100%' }}>
             {cart.map((item, index) => (
                 <LiveBillItem key={index} cartItem={item} />
             ))}
@@ -34,6 +34,29 @@ export const LiveBillList: React.FC = () => {
                     </Typography>
                 </Grid>
             </Grid>
-        </Box>
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    height: '100%',
+                }}
+            >
+                <Button
+                    variant={'contained'}
+                    color={'primary'}
+                    fullWidth
+                    sx={{
+                        marginTop: 'auto',
+                        marginBottom: '20px',
+                        boxShadow: 'none',
+                        fontWeight: 600,
+                        fontSize: '18px',
+                    }}
+                >
+                    {'תשלום '}
+                    {currencyFormatter.from(totalPrice).toString()}
+                </Button>
+            </Box>
+        </Stack>
     );
 };

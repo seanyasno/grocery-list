@@ -3,20 +3,22 @@ import React, { useContext } from 'react';
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { ShoppingCartContext } from '@/contexts';
-import { LiveBillItem, LiveBillList } from '@/features/live-bill';
+import { LiveBillList } from '@/features/live-bill';
 import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
-import { Box, Button, Collapse, Stack, Typography } from '@mui/material';
+import { Button, Collapse, Stack, Typography } from '@mui/material';
 
 export const StyledContainer = styled.div<{ expanded: boolean }>`
     display: flex;
     width: max-content;
     box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.11);
     border-radius: 16px;
-    padding: 25px;
+    padding: ${({ expanded }) => (expanded ? '25px 25px 0 25px' : '25px')};
+    max-width: 395px;
     min-width: 395px;
-    height: ${({ expanded }) => (expanded ? '100%' : 'unset')};
+    height: ${({ expanded }) => (expanded ? '80vh' : 'unset')};
     flex-direction: column;
+    overflow-y: auto;
 `;
 
 type Props = {
@@ -67,7 +69,17 @@ export const LiveBillCard: React.FC<Props> = (props) => {
                 </Button>
             </Stack>
 
-            <Collapse in={expanded} timeout={'auto'} unmountOnExit>
+            <Collapse
+                in={expanded}
+                timeout={'auto'}
+                unmountOnExit
+                sx={{
+                    height: '100%',
+                    flexGrow: 1,
+                    flex: 1,
+                    display: 'flex',
+                }}
+            >
                 <LiveBillList />
             </Collapse>
         </StyledContainer>

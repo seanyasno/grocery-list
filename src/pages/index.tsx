@@ -14,6 +14,7 @@ import { Box, Button, Grid } from '@mui/material';
 const groceries = [
     { name: 'תפוח', price: 1.9, id: 'a' },
     { name: 'ענבים', price: 2.99, id: 'b' },
+
     { name: 'קוקה קולה', price: 3.0, id: 'c' },
     { name: 'מיץ תפוזים', price: 5.99, id: 'd' },
     { name: 'אוריאו', price: 9.99, id: 'e' },
@@ -21,7 +22,7 @@ const groceries = [
 ];
 
 export default function Home() {
-    const [layout, setLayout] = useState(2);
+    const [layout, setLayout] = useState(1);
 
     return (
         <>
@@ -59,7 +60,12 @@ export default function Home() {
                         </Button>
 
                         <Grid container columnSpacing={3}>
-                            <Grid item xs={layout === 1 ? 12 : true}>
+                            <Grid
+                                item
+                                xs={layout === 1 ? 12 : true}
+                                height={'80vh'}
+                                overflow={'auto'}
+                            >
                                 <Grid container spacing={3} display={'flex'}>
                                     <Grid
                                         item
