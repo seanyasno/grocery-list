@@ -2,13 +2,14 @@ import {
     createContext,
     PropsWithChildren,
     useCallback,
+    useEffect,
     useMemo,
     useState,
 } from 'react';
 import React from 'react';
 
 import { CartItem, Grocery } from '@/abstraction';
-import { cloneWith } from 'lodash';
+import { cloneWith, isEmpty } from 'lodash';
 
 type ContextProps = {
     cart: CartItem[];
@@ -34,11 +35,11 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
 ) => {
     const { children } = props;
 
-    const [cart, setCart] = useState<CartItem[]>([]);
+    const [cart, setCart] = useState<CartItem[]>(undefined);
 
     const totalPrice = useMemo(
         () =>
-            cart.reduce((acc, { grocery, amount }) => {
+            cart?.reduce((acc, { grocery, amount }) => {
                 return acc + grocery.price * amount;
             }, 0),
         [cart]
@@ -46,7 +47,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
 
     const addGrocery = useCallback(
         (grocery: Grocery, amount: number) => {
-            const existingGrocery = cart.find(
+            const existingGrocery = cart?.find(
                 (g) => g.grocery.id === grocery.id
             );
 
@@ -62,7 +63,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
 
     const removeGrocery = useCallback(
         (id: string) => {
-            const existingGrocery = cart.find((g) => g.grocery.id === id);
+            const existingGrocery = cart?.find((g) => g.grocery.id === id);
 
             if (existingGrocery) {
                 setCart((prevCart) =>
@@ -75,7 +76,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
 
     const getAmountOfGrocery = useCallback(
         (id: string) => {
-            const existingGrocery = cart.find(
+            const existingGrocery = cart?.find(
                 ({ grocery }) => grocery.id === id
             );
 
@@ -87,6 +88,18 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
         },
         [cart]
     );
+
+    useEffect(() => {
+        if (!isEmpty(localStorage.getItem('cart'))) {
+            setCart(JSON.parse(localStorage.getItem('cart') || '[]'));
+        }
+    }, []);
+
+    useEffect(() => {
+        if (cart !== undefined) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    }, [cart]);
 
     return (
         <ShoppingCartContext.Provider
