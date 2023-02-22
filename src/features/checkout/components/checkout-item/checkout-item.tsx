@@ -8,8 +8,6 @@ import { theme } from '@/styles/theme';
 import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
 import { Button, IconButton, Stack, Typography } from '@mui/material';
-import { ExtendButtonBase } from '@mui/material/ButtonBase';
-import { IconButtonTypeMap } from '@mui/material/IconButton/IconButton';
 
 const ImageContainer = styled.div`
     height: 80px;
@@ -52,7 +50,11 @@ export const CheckoutItem: React.FC<Props> = (props) => {
                     </Typography>
                 </Stack>
 
-                <Stack direction={'row'} justifyContent={'space-between'}>
+                <Stack
+                    direction={'row'}
+                    justifyContent={'space-between'}
+                    mt={'24px'}
+                >
                     <Button
                         variant={'outlined'}
                         color={'error'}

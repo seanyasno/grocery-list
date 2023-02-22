@@ -13,6 +13,9 @@ export const theme = createTheme({
         error: {
             main: '#FA3434',
         },
+        info: {
+            main: '#7C8694',
+        },
     },
     typography: {
         fontFamily: 'Heebo, sans-serif',

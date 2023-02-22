@@ -17,6 +17,7 @@ type ContextProps = {
 
     addGrocery: (grocery: Grocery, amount: number) => void;
     removeGrocery: (id: string, amount?: number) => void;
+    resetCart: () => void;
     getAmountOfGrocery: (id: string) => number;
 };
 
@@ -25,6 +26,7 @@ export const ShoppingCartContext = createContext<ContextProps>({
     totalPrice: 0,
     addGrocery: (grocery: Grocery) => {},
     removeGrocery: (id: string) => {},
+    resetCart: () => {},
     getAmountOfGrocery: (id: string) => 0,
 });
 
@@ -79,6 +81,10 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
         [cart]
     );
 
+    const resetCart = useCallback(() => {
+        setCart([]);
+    }, []);
+
     const getAmountOfGrocery = useCallback(
         (id: string) => {
             const existingGrocery = cart?.find(
@@ -113,6 +119,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
                 totalPrice,
                 addGrocery,
                 removeGrocery,
+                resetCart,
                 getAmountOfGrocery,
             }}
         >

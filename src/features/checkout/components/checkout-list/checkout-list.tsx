@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
 
-import { CartItem } from '@/abstraction';
+import { useRouter } from 'next/router';
+
+import { HiOutlineArrowRight } from 'react-icons/hi';
+
 import { ShoppingCartContext } from '@/contexts';
 import { CheckoutItem } from '@/features/checkout';
+import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { Divider } from '@mui/material';
+import { Button, Divider, Stack } from '@mui/material';
 
 const Container = styled.div`
     border: 1px solid #dee2e7;
@@ -15,7 +19,11 @@ const Container = styled.div`
 type Props = {};
 
 export const CheckoutList: React.FC<Props> = (props) => {
-    const { cart } = useContext(ShoppingCartContext);
+    const { cart, resetCart } = useContext(ShoppingCartContext);
+    const router = useRouter();
+
+    const backButtonLabel = 'חזרה לחנות';
+    const deleteAllButtonLabel = 'הורד הכל מהסל';
 
     return (
         <Container>
@@ -25,6 +33,27 @@ export const CheckoutList: React.FC<Props> = (props) => {
                     <Divider sx={{ margin: '20px 0' }} />
                 </React.Fragment>
             ))}
+            <Stack direction={'row'} justifyContent={'space-between'}>
+                <Button
+                    variant={'contained'}
+                    color={'info'}
+                    onClick={() => router.push('/')}
+                >
+                    <HiOutlineArrowRight style={{ marginLeft: '6px' }} />
+                    {backButtonLabel}
+                </Button>
+                <Button
+                    variant={'outlined'}
+                    color={'error'}
+                    sx={{
+                        border: `1px solid ${theme.palette.error.main}`,
+                        boxShadow: 'none',
+                    }}
+                    onClick={() => resetCart()}
+                >
+                    {deleteAllButtonLabel}
+                </Button>
+            </Stack>
         </Container>
     );
 };

@@ -9,6 +9,8 @@ export const Container = styled.div`
     padding: 22px;
     border: 1px solid #dee2e7;
     border-radius: 10px;
+    max-width: 433px;
+    width: 433px;
 `;
 
 type Props = {

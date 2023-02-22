@@ -21,10 +21,10 @@ const CheckoutPage: NextPage = () => {
                     }}
                     columnSpacing={2}
                 >
-                    <Grid item xs={9}>
+                    <Grid item xs>
                         <CheckoutList />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item>
                         <OrderSummary vatRate={17} />
                     </Grid>
                 </Grid>
