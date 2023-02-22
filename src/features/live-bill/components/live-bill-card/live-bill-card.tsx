@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import { useRouter } from 'next/router';
+
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { ShoppingCartContext } from '@/contexts';
@@ -28,6 +30,7 @@ type Props = {
 export const LiveBillCard: React.FC<Props> = (props) => {
     const { expanded } = props;
     const { totalPrice } = useContext(ShoppingCartContext);
+    const router = useRouter();
 
     const buttonLabel = 'ללכת לעגלה';
 
@@ -63,6 +66,7 @@ export const LiveBillCard: React.FC<Props> = (props) => {
                         height: 'max-content',
                         padding: '10px 20px',
                     }}
+                    onClick={() => router.push('/checkout')}
                 >
                     <FiShoppingCart size={22} />
                     {buttonLabel}

@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 
+import { useRouter } from 'next/router';
+
 import { ShoppingCartContext } from '@/contexts';
 import { LiveBillItem } from '@/features/live-bill';
 import { currencyFormatter } from '@/utils';
@@ -7,6 +9,7 @@ import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 
 export const LiveBillList: React.FC = () => {
     const { cart, totalPrice } = useContext(ShoppingCartContext);
+    const router = useRouter();
 
     return (
         <Stack sx={{ height: '100%' }}>
@@ -52,6 +55,7 @@ export const LiveBillList: React.FC = () => {
                         fontWeight: 600,
                         fontSize: '18px',
                     }}
+                    onClick={() => router.push('/checkout')}
                 >
                     {'תשלום '}
                     {currencyFormatter.from(totalPrice).toString()}
