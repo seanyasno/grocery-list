@@ -16,7 +16,7 @@ type ContextProps = {
     totalPrice: number;
 
     addGrocery: (grocery: Grocery, amount: number) => void;
-    removeGrocery: (id: string) => void;
+    removeGrocery: (id: string, amount?: number) => void;
     getAmountOfGrocery: (id: string) => number;
 };
 
@@ -62,13 +62,18 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
     );
 
     const removeGrocery = useCallback(
-        (id: string) => {
+        (id: string, amount?: number) => {
             const existingGrocery = cart?.find((g) => g.grocery.id === id);
 
             if (existingGrocery) {
-                setCart((prevCart) =>
-                    prevCart.filter((item) => item.grocery.id !== id)
-                );
+                if (amount && existingGrocery.amount - amount > 0) {
+                    existingGrocery.amount -= amount;
+                    setCart([...cart]);
+                } else {
+                    setCart((prevCart) =>
+                        prevCart.filter((item) => item.grocery.id !== id)
+                    );
+                }
             }
         },
         [cart]
