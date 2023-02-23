@@ -61,7 +61,7 @@ export const ResponsiveAppBar: React.FC = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position={'static'} color={'default'} elevation={1}>
+            <AppBar position={'relative'} color={'default'} elevation={1}>
                 <Toolbar
                     sx={{
                         justifyContent: 'space-between',

@@ -63,8 +63,8 @@ export default function Home() {
                             <Grid
                                 item
                                 xs={layout === 1 ? 12 : true}
-                                height={'80vh'}
-                                overflow={'auto'}
+                                height={layout === 1 ? '100%' : '80vh'}
+                                overflow={layout === 1 ? 'unset' : 'auto'}
                             >
                                 <Grid container spacing={3} display={'flex'}>
                                     <Grid

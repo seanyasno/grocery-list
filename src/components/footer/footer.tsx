@@ -16,13 +16,14 @@ export const Footer: React.FC = () => {
             container
             component={'footer'}
             bgcolor={theme.palette.secondary.main}
-            padding={'60px 120px'}
+            padding={'40px 120px'}
             rowSpacing={6}
             sx={{
                 [theme.breakpoints.down('md')]: {
                     padding: '20px 60px',
                 },
             }}
+            mt={'10px'}
         >
             <Grid item xs={12} sm={4}>
                 <Typography
