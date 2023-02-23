@@ -1,10 +1,11 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { Grocery } from '@/abstraction';
-import { ShoppingCartContext } from '@/contexts';
+import { FavoriteGroceriesContext, ShoppingCartContext } from '@/contexts';
 import { currencyFormatter } from '@/utils';
 import { Grid, IconButton, Typography } from '@mui/material';
 
@@ -24,7 +25,14 @@ type Props = {
 export const GroceryItemCard: React.FC<Props> = (props) => {
     const { grocery } = props;
     const { addGrocery } = useContext(ShoppingCartContext);
+    const { isFavoriteGrocery, addFavoriteGrocery, removeFavoriteGrocery } =
+        useContext(FavoriteGroceriesContext);
     const [amountToAdd, setAmountToAdd] = useState(0);
+
+    const isFavorite = useMemo(
+        () => isFavoriteGrocery(grocery.id),
+        [grocery.id, isFavoriteGrocery]
+    );
 
     const handleIncrease = useCallback(() => {
         setAmountToAdd((prev) => prev + 1);
@@ -47,7 +55,25 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
 
     return (
         <StyledCard elevation={0}>
-            <TempImage />
+            <TempImage>
+                <IconButton
+                    color={'primary'}
+                    sx={{ margin: '6px' }}
+                    onClick={() => {
+                        if (isFavorite) {
+                            removeFavoriteGrocery(grocery.id);
+                        } else {
+                            addFavoriteGrocery(grocery.id);
+                        }
+                    }}
+                >
+                    {isFavorite ? (
+                        <AiFillHeart size={24} />
+                    ) : (
+                        <AiOutlineHeart size={24} />
+                    )}
+                </IconButton>
+            </TempImage>
 
             <BottomSectionGrid container>
                 <InfoGrid item xs={12}>

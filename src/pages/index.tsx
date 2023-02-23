@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 
 import { Footer, ResponsiveAppBar } from '@/components';
-import { ShoppingCartProvider } from '@/contexts';
+import { FavoriteGroceriesProvider, ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
 import { LiveBillCard } from '@/features/live-bill';
@@ -21,7 +21,7 @@ const groceries = [
     { name: 'עוף', price: 6.99, id: 'f' },
 ];
 
-export default function Home() {
+const HomePage = () => {
     const [layout, setLayout] = useState(1);
 
     return (
@@ -40,76 +40,84 @@ export default function Home() {
             </Head>
 
             <ShoppingCartProvider>
-                <ResponsiveAppBar />
+                <FavoriteGroceriesProvider>
+                    <ResponsiveAppBar />
 
-                <main className={styles.main}>
-                    <Box
-                        sx={{
-                            [theme.breakpoints.up('sm')]: {
-                                padding: '30px',
-                            },
-                        }}
-                    >
-                        <Button
-                            variant="contained"
-                            onClick={() =>
-                                setLayout((prev) => (prev === 1 ? 2 : 1))
-                            }
+                    <main className={styles.main}>
+                        <Box
+                            sx={{
+                                [theme.breakpoints.up('sm')]: {
+                                    padding: '30px',
+                                },
+                            }}
                         >
-                            Test
-                        </Button>
-
-                        <Grid container columnSpacing={3}>
-                            <Grid
-                                item
-                                xs={layout === 1 ? 12 : true}
-                                height={layout === 1 ? '100%' : '80vh'}
-                                overflow={layout === 1 ? 'unset' : 'auto'}
+                            <Button
+                                variant="contained"
+                                onClick={() =>
+                                    setLayout((prev) => (prev === 1 ? 2 : 1))
+                                }
                             >
-                                <Grid container spacing={3} display={'flex'}>
+                                Test
+                            </Button>
+
+                            <Grid container columnSpacing={3}>
+                                <Grid
+                                    item
+                                    xs={layout === 1 ? 12 : true}
+                                    height={layout === 1 ? '100%' : '80vh'}
+                                    overflow={layout === 1 ? 'unset' : 'auto'}
+                                >
                                     <Grid
-                                        item
-                                        xs={layout === 1 ? true : 12}
-                                        flexGrow={1}
-                                        flex={1}
+                                        container
+                                        spacing={3}
+                                        display={'flex'}
                                     >
-                                        <Box
-                                            sx={{
-                                                marginBottom: '40px',
-                                                width: '100%',
-                                                display: 'flex',
-                                            }}
+                                        <Grid
+                                            item
+                                            xs={layout === 1 ? true : 12}
+                                            flexGrow={1}
+                                            flex={1}
                                         >
-                                            <GroceriesCategoriesList />
-                                        </Box>
-                                    </Grid>
-
-                                    {layout === 1 && (
-                                        <Grid item>
-                                            <LiveBillCard />
+                                            <Box
+                                                sx={{
+                                                    marginBottom: '40px',
+                                                    width: '100%',
+                                                    display: 'flex',
+                                                }}
+                                            >
+                                                <GroceriesCategoriesList />
+                                            </Box>
                                         </Grid>
-                                    )}
 
-                                    <Grid item>
-                                        <GroceriesCardsList
-                                            groceries={groceries}
-                                            shrink={layout !== 1}
-                                        />
+                                        {layout === 1 && (
+                                            <Grid item>
+                                                <LiveBillCard />
+                                            </Grid>
+                                        )}
+
+                                        <Grid item>
+                                            <GroceriesCardsList
+                                                groceries={groceries}
+                                                shrink={layout !== 1}
+                                            />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
 
-                            {layout !== 1 && (
-                                <Grid item>
-                                    <LiveBillCard expanded={layout !== 1} />
-                                </Grid>
-                            )}
-                        </Grid>
-                    </Box>
-                </main>
+                                {layout !== 1 && (
+                                    <Grid item>
+                                        <LiveBillCard expanded={layout !== 1} />
+                                    </Grid>
+                                )}
+                            </Grid>
+                        </Box>
+                    </main>
+                </FavoriteGroceriesProvider>
             </ShoppingCartProvider>
 
             <Footer />
         </>
     );
-}
+};
+
+export default HomePage;
