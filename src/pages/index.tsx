@@ -51,15 +51,6 @@ const HomePage = () => {
                                 },
                             }}
                         >
-                            <Button
-                                variant="contained"
-                                onClick={() =>
-                                    setLayout((prev) => (prev === 1 ? 2 : 1))
-                                }
-                            >
-                                Test
-                            </Button>
-
                             <Grid container columnSpacing={3}>
                                 <Grid
                                     item
@@ -91,7 +82,13 @@ const HomePage = () => {
 
                                         {layout === 1 && (
                                             <Grid item>
-                                                <LiveBillCard />
+                                                <LiveBillCard
+                                                    onExpandClick={() =>
+                                                        setLayout((prev) =>
+                                                            prev === 1 ? 2 : 1
+                                                        )
+                                                    }
+                                                />
                                             </Grid>
                                         )}
 
@@ -106,7 +103,14 @@ const HomePage = () => {
 
                                 {layout !== 1 && (
                                     <Grid item>
-                                        <LiveBillCard expanded={layout !== 1} />
+                                        <LiveBillCard
+                                            expanded={layout !== 1}
+                                            onExpandClick={() =>
+                                                setLayout((prev) =>
+                                                    prev === 1 ? 2 : 1
+                                                )
+                                            }
+                                        />
                                     </Grid>
                                 )}
                             </Grid>
