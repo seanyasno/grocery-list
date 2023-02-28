@@ -13,7 +13,7 @@ export const LiveBillList: React.FC = () => {
 
     return (
         <Stack sx={{ height: '100%' }}>
-            {cart.map((item, index) => (
+            {cart?.map((item, index) => (
                 <LiveBillItem key={index} cartItem={item} />
             ))}
 
@@ -33,7 +33,7 @@ export const LiveBillList: React.FC = () => {
                         fontWeight={600}
                         fontSize={'18px'}
                     >
-                        {currencyFormatter.from(totalPrice).toString()}
+                        {currencyFormatter.from(totalPrice ?? 0).toString()}
                     </Typography>
                 </Grid>
             </Grid>
@@ -58,7 +58,7 @@ export const LiveBillList: React.FC = () => {
                     onClick={() => router.push('/checkout')}
                 >
                     {'תשלום '}
-                    {currencyFormatter.from(totalPrice).toString()}
+                    {currencyFormatter.from(totalPrice ?? 0).toString()}
                 </Button>
             </Box>
         </Stack>

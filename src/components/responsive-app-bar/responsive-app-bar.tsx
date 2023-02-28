@@ -7,6 +7,7 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { RiUser3Line } from 'react-icons/ri';
 import { TbClipboardList } from 'react-icons/tb';
 
+import { auth } from '@/config';
 import { SearchBar } from '@/features/groceries-search';
 import { theme } from '@/styles/theme';
 import {
@@ -19,6 +20,7 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 type PageItem = {
     title: string;
@@ -51,6 +53,8 @@ const pages: PageItem[] = [
 ];
 
 export const ResponsiveAppBar: React.FC = () => {
+    const [user] = useAuthState(auth);
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null
     );
@@ -112,35 +116,41 @@ export const ResponsiveAppBar: React.FC = () => {
                             alignItems: 'center',
                         }}
                     >
-                        {pages.map(({ title, href, icon }, index) => (
-                            <React.Fragment key={index}>
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    variant={'text'}
-                                    sx={{
-                                        my: 2,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        columnGap: '8px',
-                                    }}
-                                    href={href}
-                                >
-                                    {icon}
-                                    {title}
-                                </Button>
-                                {index !== pages.length - 1 && (
-                                    <Box
+                        {pages.map(({ title, href, icon }, index) => {
+                            if (title === 'התחברות' && user) {
+                                return <React.Fragment key={index} />;
+                            }
+
+                            return (
+                                <React.Fragment key={index}>
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        variant={'text'}
                                         sx={{
+                                            my: 2,
                                             display: 'flex',
-                                            width: '24px',
-                                            height: '0px',
-                                            border: '1px solid #D9D9D9',
-                                            transform: 'rotate(90deg)',
+                                            alignItems: 'center',
+                                            columnGap: '8px',
                                         }}
-                                    />
-                                )}
-                            </React.Fragment>
-                        ))}
+                                        href={href}
+                                    >
+                                        {icon}
+                                        {title}
+                                    </Button>
+                                    {index !== pages.length - 1 && (
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                width: '24px',
+                                                height: '0px',
+                                                border: '1px solid #D9D9D9',
+                                                transform: 'rotate(90deg)',
+                                            }}
+                                        />
+                                    )}
+                                </React.Fragment>
+                            );
+                        })}
                     </Box>
 
                     <Box

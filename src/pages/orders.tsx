@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 import { Footer, ResponsiveAppBar } from '@/components';
+import { auth } from '@/config';
 import { FavoriteGroceriesProvider } from '@/contexts';
 import { PreviousOrdersList, SavedOrdersList } from '@/features/orders';
 import { theme } from '@/styles/theme';
 import { Box, Tab, Tabs } from '@mui/material';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const OrdersPage: NextPage = () => {
     const [currentTab, setCurrentTab] = useState(0);
+    const [user, loading] = useAuthState(auth);
+    const router = useRouter();
+
+    if (loading && !user) {
+        return <>loading...</>;
+    } else if (!user) {
+        router.replace('/');
+    }
 
     return (
         <Box>

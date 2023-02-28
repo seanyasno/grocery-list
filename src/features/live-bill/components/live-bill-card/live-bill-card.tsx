@@ -94,7 +94,7 @@ export const LiveBillCard: React.FC<Props> = (props) => {
                             fontWeight={600}
                             sx={{ lineHeight: '28px' }}
                         >
-                            {currencyFormatter.from(totalPrice)?.toString()}
+                            {currencyFormatter.from(totalPrice ?? 0).toString()}
                         </Typography>
                     </Stack>
 

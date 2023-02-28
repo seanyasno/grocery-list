@@ -5,9 +5,12 @@ import { BiMinus, BiPlus } from 'react-icons/bi';
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { Grocery } from '@/abstraction';
+import { auth } from '@/config';
 import { FavoriteGroceriesContext, ShoppingCartContext } from '@/contexts';
+import { FavoriteButton } from '@/features/grocery-item';
 import { currencyFormatter } from '@/utils';
 import { Grid, IconButton, Typography } from '@mui/material';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 import {
     AddToCartButton,
@@ -25,14 +28,8 @@ type Props = {
 export const GroceryItemCard: React.FC<Props> = (props) => {
     const { grocery } = props;
     const { addGrocery } = useContext(ShoppingCartContext);
-    const { isFavoriteGrocery, addFavoriteGrocery, removeFavoriteGrocery } =
-        useContext(FavoriteGroceriesContext);
     const [amountToAdd, setAmountToAdd] = useState(0);
-
-    const isFavorite = useMemo(
-        () => isFavoriteGrocery(grocery.id),
-        [grocery.id, isFavoriteGrocery]
-    );
+    const [user] = useAuthState(auth);
 
     const handleIncrease = useCallback(() => {
         setAmountToAdd((prev) => prev + 1);
@@ -56,23 +53,14 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
     return (
         <StyledCard elevation={0}>
             <TempImage>
-                <IconButton
-                    color={'primary'}
-                    sx={{ margin: '6px' }}
-                    onClick={() => {
-                        if (isFavorite) {
-                            removeFavoriteGrocery(grocery.id);
-                        } else {
-                            addFavoriteGrocery(grocery.id);
-                        }
-                    }}
-                >
-                    {isFavorite ? (
-                        <AiFillHeart size={24} />
-                    ) : (
-                        <AiOutlineHeart size={24} />
-                    )}
-                </IconButton>
+                {user && (
+                    <FavoriteButton
+                        groceryId={grocery.id}
+                        color={'primary'}
+                        size={24}
+                        sx={{ margin: '6px' }}
+                    />
+                )}
             </TempImage>
 
             <BottomSectionGrid container>

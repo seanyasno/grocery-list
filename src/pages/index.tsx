@@ -81,7 +81,13 @@ const HomePage = () => {
                                         </Grid>
 
                                         {layout === 1 && (
-                                            <Grid item display={{ xs: 'none' }}>
+                                            <Grid
+                                                item
+                                                display={{
+                                                    xs: 'none',
+                                                    md: 'block',
+                                                }}
+                                            >
                                                 <LiveBillCard
                                                     onExpandClick={() =>
                                                         setLayout((prev) =>
@@ -102,7 +108,10 @@ const HomePage = () => {
                                 </Grid>
 
                                 {layout !== 1 && (
-                                    <Grid item display={{ xs: 'none' }}>
+                                    <Grid
+                                        item
+                                        display={{ xs: 'none', md: 'block' }}
+                                    >
                                         <LiveBillCard
                                             expanded={layout !== 1}
                                             onExpandClick={() =>
