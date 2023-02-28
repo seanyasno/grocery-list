@@ -5,6 +5,7 @@ import { NextPage } from 'next';
 import { Footer, ResponsiveAppBar } from '@/components';
 import { FavoriteGroceriesProvider } from '@/contexts';
 import { PreviousOrdersList, SavedOrdersList } from '@/features/orders';
+import { theme } from '@/styles/theme';
 import { Box, Tab, Tabs } from '@mui/material';
 
 const OrdersPage: NextPage = () => {
@@ -15,7 +16,10 @@ const OrdersPage: NextPage = () => {
             <ResponsiveAppBar />
             <Box
                 sx={{
-                    padding: '50px',
+                    padding: '0 20px 50px 20px',
+                    [theme.breakpoints.up('sm')]: {
+                        padding: '50px',
+                    },
                 }}
             >
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -97,6 +101,14 @@ const OrdersPage: NextPage = () => {
                                             name: 'מיץ תפוזים',
                                             price: 5.99,
                                             id: 'd',
+                                        },
+                                        amount: 5,
+                                    },
+                                    {
+                                        grocery: {
+                                            name: 'נייר טואלט סופט גלילים',
+                                            price: 99,
+                                            id: 'ק',
                                         },
                                         amount: 5,
                                     },
