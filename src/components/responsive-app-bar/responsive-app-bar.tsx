@@ -22,16 +22,19 @@ import {
 
 type PageItem = {
     title: string;
+    href?: string;
     icon: React.ReactNode;
 };
 
 const pages: PageItem[] = [
     {
         title: 'רשימת קניות',
+        href: '/orders',
         icon: <TbClipboardList color={theme.palette.primary.main} size={20} />,
     },
     {
         title: 'התחברות',
+        href: '/login',
         icon: <RiUser3Line color={theme.palette.primary.main} size={20} />,
     },
     {
@@ -42,6 +45,7 @@ const pages: PageItem[] = [
     },
     {
         title: 'עגלה',
+        href: '/checkout',
         icon: <FiShoppingCart color={theme.palette.primary.main} size={20} />,
     },
 ];
@@ -108,7 +112,7 @@ export const ResponsiveAppBar: React.FC = () => {
                             alignItems: 'center',
                         }}
                     >
-                        {pages.map(({ title, icon }, index) => (
+                        {pages.map(({ title, href, icon }, index) => (
                             <React.Fragment key={index}>
                                 <Button
                                     onClick={handleCloseNavMenu}
@@ -119,6 +123,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                         alignItems: 'center',
                                         columnGap: '8px',
                                     }}
+                                    href={href}
                                 >
                                     {icon}
                                     {title}
