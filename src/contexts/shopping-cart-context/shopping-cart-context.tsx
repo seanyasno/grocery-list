@@ -57,7 +57,10 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
                 existingGrocery.amount += amount;
                 setCart([...cart]);
             } else {
-                setCart([...cart, { grocery: cloneWith(grocery), amount }]);
+                setCart([
+                    ...(cart ?? []),
+                    { grocery: cloneWith(grocery), amount },
+                ]);
             }
         },
         [cart]

@@ -77,6 +77,7 @@ export const SearchBar: React.FC = () => {
                         name: selectedGrocery?.name,
                         price: Number(bestSelectedGrocery?.PRICE ?? '0'),
                     }}
+                    onAddToCart={() => setSelectedGrocery(null)}
                 />
             </Dialog>
         </>

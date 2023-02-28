@@ -23,10 +23,11 @@ import {
 
 type Props = {
     grocery: Grocery;
+    onAddToCart?: () => void;
 };
 
 export const GroceryItemCard: React.FC<Props> = (props) => {
-    const { grocery } = props;
+    const { grocery, onAddToCart } = props;
     const { addGrocery } = useContext(ShoppingCartContext);
     const [amountToAdd, setAmountToAdd] = useState(0);
     const [user] = useAuthState(auth);
@@ -48,6 +49,7 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
     const handleAddToCart = useCallback(() => {
         addGrocery(grocery, amountToAdd);
         setAmountToAdd(0);
+        onAddToCart?.();
     }, [addGrocery, grocery, amountToAdd]);
 
     return (
