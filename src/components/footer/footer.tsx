@@ -20,7 +20,7 @@ export const Footer: React.FC = () => {
             rowSpacing={6}
             sx={{
                 [theme.breakpoints.down('md')]: {
-                    padding: '20px 60px',
+                    padding: '0px 60px 40px 60px',
                 },
             }}
             mt={'10px'}
