@@ -1,12 +1,11 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { FiShoppingCart } from 'react-icons/fi';
 
 import { Grocery } from '@/abstraction';
 import { auth } from '@/config';
-import { FavoriteGroceriesContext, ShoppingCartContext } from '@/contexts';
+import { ShoppingCartContext } from '@/contexts';
 import { FavoriteButton } from '@/features/grocery-item';
 import { currencyFormatter } from '@/utils';
 import { Grid, IconButton, Typography } from '@mui/material';
@@ -80,7 +79,7 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
                         fontWeight={600}
                         color={'primary'}
                     >
-                        {currencyFormatter.from(grocery.price)?.toString()}
+                        {currencyFormatter.from(grocery.price ?? 0)?.toString()}
                     </Typography>
                 </InfoGrid>
 

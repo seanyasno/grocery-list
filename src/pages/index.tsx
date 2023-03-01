@@ -3,18 +3,20 @@ import { useState } from 'react';
 import Head from 'next/head';
 
 import { Footer, ResponsiveAppBar } from '@/components';
+import { firestore } from '@/config';
 import { FavoriteGroceriesProvider, ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
 import { LiveBillCard } from '@/features/live-bill';
+import { useUser } from '@/hooks';
 import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 const groceries = [
     { name: 'תפוח', price: 1.9, id: 'a' },
     { name: 'ענבים', price: 2.99, id: 'b' },
-
+    { name: 'במבה פרו', price: 6, id: 'chp_temp_7290115203172' },
     { name: 'קוקה קולה', price: 3.0, id: 'c' },
     { name: 'מיץ תפוזים', price: 5.99, id: 'd' },
     { name: 'אוריאו', price: 9.99, id: 'e' },
@@ -23,6 +25,7 @@ const groceries = [
 
 const HomePage = () => {
     const [layout, setLayout] = useState(1);
+    const [user] = useUser('8YAcs0WvWQMCr0ki6F9QYXNDNvG3');
 
     return (
         <>
@@ -40,7 +43,10 @@ const HomePage = () => {
             </Head>
 
             <ShoppingCartProvider>
-                <FavoriteGroceriesProvider>
+                <FavoriteGroceriesProvider
+                    initialFavoriteGroceriesIds={user?.favoriteGroceries}
+                    loadFromLocalStorage={false}
+                >
                     <ResponsiveAppBar />
 
                     <main className={styles.main}>

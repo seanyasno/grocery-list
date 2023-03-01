@@ -36,7 +36,6 @@ export const FavoriteGroceriesProvider: React.FC<PropsWithChildren<Props>> = (
         loadFromLocalStorage = true,
         initialFavoriteGroceriesIds,
     } = props;
-
     const [favoriteGroceriesIds, setFavoriteGroceriesIds] = useState(
         initialFavoriteGroceriesIds ? initialFavoriteGroceriesIds : undefined
     );
@@ -69,6 +68,10 @@ export const FavoriteGroceriesProvider: React.FC<PropsWithChildren<Props>> = (
         },
         [isFavoriteGrocery]
     );
+
+    useEffect(() => {
+        setFavoriteGroceriesIds(initialFavoriteGroceriesIds);
+    }, [initialFavoriteGroceriesIds]);
 
     useEffect(() => {
         if (!loadFromLocalStorage) {
