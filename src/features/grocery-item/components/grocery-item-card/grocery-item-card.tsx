@@ -49,7 +49,7 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
         addGrocery(grocery, amountToAdd);
         setAmountToAdd(0);
         onAddToCart?.();
-    }, [addGrocery, grocery, amountToAdd]);
+    }, [addGrocery, grocery, amountToAdd, onAddToCart]);
 
     return (
         <StyledCard elevation={0}>

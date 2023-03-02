@@ -7,12 +7,7 @@ import { Footer, ResponsiveAppBar } from '@/components';
 import { auth } from '@/config';
 import { FavoriteGroceriesProvider } from '@/contexts';
 import { PreviousOrdersList, SavedOrdersList } from '@/features/orders';
-import {
-    useBestGroceryPrice,
-    useGroceryByBarcode,
-    useGroceryOptions,
-    useUser,
-} from '@/hooks';
+import { useGroceryByBarcode, useUser } from '@/hooks';
 import { theme } from '@/styles/theme';
 import { Box, Tab, Tabs } from '@mui/material';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -22,12 +17,13 @@ const OrdersPage: NextPage = () => {
     const [user, loading] = useAuthState(auth);
     const [userData] = useUser('8YAcs0WvWQMCr0ki6F9QYXNDNvG3');
 
-    const { data: groceries, isLoading: isLoadingGroceries } =
-        useGroceryByBarcode(userData?.favoriteGroceries);
+    const { data: groceries } = useGroceryByBarcode(
+        userData?.favoriteGroceries
+    );
 
     const router = useRouter();
 
-    if ((loading && !user) || isLoadingGroceries) {
+    if (loading && !user) {
         return <>loading...</>;
     } else if (!user) {
         router.replace('/');
@@ -36,6 +32,7 @@ const OrdersPage: NextPage = () => {
     return (
         <Box>
             <FavoriteGroceriesProvider
+                uid={user?.uid}
                 initialFavoriteGroceriesIds={userData?.favoriteGroceries}
                 loadFromLocalStorage={false}
             >
