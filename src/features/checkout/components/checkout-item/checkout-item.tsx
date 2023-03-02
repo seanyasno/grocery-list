@@ -7,7 +7,7 @@ import { ShoppingCartContext } from '@/contexts';
 import { theme } from '@/styles/theme';
 import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
-import { Button, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 
 const ImageContainer = styled.div`
     height: 80px;
@@ -15,6 +15,13 @@ const ImageContainer = styled.div`
     background: #f7f7f7;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
+
+    ${theme.breakpoints.down('sm')} {
+        height: 60px;
+        width: 60px;
+        aspect-ratio: 1/1;
+        //margin-right: 8px;
+    }
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -41,10 +48,34 @@ export const CheckoutItem: React.FC<Props> = (props) => {
 
     return (
         <Stack direction={'row'}>
-            <ImageContainer />
-            <Stack width={'100%'} padding={'0 10px'}>
+            <Box
+                display={{
+                    xs: 'none',
+                    md: 'block',
+                }}
+            >
+                <ImageContainer />
+            </Box>
+            <Stack
+                width={'100%'}
+                sx={{
+                    padding: '0 10px',
+                    [theme.breakpoints.down('sm')]: {
+                        padding: '0',
+                    },
+                }}
+            >
                 <Stack direction={'row'} justifyContent={'space-between'}>
-                    <Typography>{grocery.name}</Typography>
+                    <Box
+                        display={{
+                            xs: 'block',
+                            md: 'none',
+                        }}
+                    >
+                        <ImageContainer />
+                    </Box>
+
+                    <Typography margin={'0 8px'}>{grocery.name}</Typography>
                     <Typography>
                         {currencyFormatter.from(totalPrice).toString()}
                     </Typography>
@@ -71,6 +102,9 @@ export const CheckoutItem: React.FC<Props> = (props) => {
                         border={'0.827068px solid #C9C9C9'}
                         borderRadius={'5px'}
                         padding={'5px'}
+                        sx={{
+                            justifyContent: 'space-between',
+                        }}
                     >
                         <StyledIconButton
                             sx={{
