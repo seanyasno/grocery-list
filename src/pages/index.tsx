@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 import { Grocery } from '@/abstraction';
 import { Footer, ResponsiveAppBar } from '@/components';
+import { auth } from '@/config';
 import { FavoriteGroceriesProvider, ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
@@ -15,6 +16,7 @@ import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
 import { groceryRequestFormatter } from '@/utils';
 import { Box, Grid } from '@mui/material';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 type Props = {
     groceries: Grocery[];
@@ -23,7 +25,8 @@ type Props = {
 const HomePage: NextPage<Props> = (props) => {
     const { groceries } = props;
     const [layout, setLayout] = useState(1);
-    const [user] = useUser('8YAcs0WvWQMCr0ki6F9QYXNDNvG3');
+    const [user] = useAuthState(auth);
+    const [userData] = useUser(user?.uid);
 
     return (
         <>
@@ -42,7 +45,8 @@ const HomePage: NextPage<Props> = (props) => {
 
             <ShoppingCartProvider>
                 <FavoriteGroceriesProvider
-                    initialFavoriteGroceriesIds={user?.favoriteGroceries}
+                    uid={user?.uid}
+                    initialFavoriteGroceriesIds={userData?.favoriteGroceries}
                     loadFromLocalStorage={false}
                 >
                     <ResponsiveAppBar />

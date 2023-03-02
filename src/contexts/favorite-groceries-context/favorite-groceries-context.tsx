@@ -6,6 +6,8 @@ import React, {
     useState,
 } from 'react';
 
+import { firestore } from '@/config';
+import { doc, getDoc, updateDoc } from '@firebase/firestore';
 import { isEmpty } from 'lodash';
 
 type ContextProps = {
@@ -24,6 +26,7 @@ export const FavoriteGroceriesContext = createContext<ContextProps>({
 });
 
 type Props = {
+    uid?: string;
     loadFromLocalStorage?: boolean;
     initialFavoriteGroceriesIds?: string[];
 };
@@ -33,6 +36,7 @@ export const FavoriteGroceriesProvider: React.FC<PropsWithChildren<Props>> = (
 ) => {
     const {
         children,
+        uid,
         loadFromLocalStorage = true,
         initialFavoriteGroceriesIds,
     } = props;
@@ -46,27 +50,52 @@ export const FavoriteGroceriesProvider: React.FC<PropsWithChildren<Props>> = (
     );
 
     const addFavoriteGrocery = useCallback(
-        (id: string) => {
+        async (id: string) => {
             if (isFavoriteGrocery(id)) {
                 return;
             }
 
-            setFavoriteGroceriesIds((prev) => [...prev, id]);
+            try {
+                if (!isEmpty(uid)) {
+                    const userRef = doc(firestore, 'users', uid);
+                    const userDoc = await getDoc(userRef);
+                    const favoriteGroceries =
+                        userDoc.get('favoriteGroceries') || [];
+                    favoriteGroceries.push(id);
+                    await updateDoc(userRef, { favoriteGroceries });
+                    setFavoriteGroceriesIds((prev) => [...prev, id]);
+                }
+            } catch (error) {
+                console.error(error);
+            }
         },
-        [isFavoriteGrocery]
+        [isFavoriteGrocery, uid]
     );
 
     const removeFavoriteGrocery = useCallback(
-        (id: string) => {
+        async (id: string) => {
             if (!isFavoriteGrocery(id)) {
                 return;
             }
 
-            setFavoriteGroceriesIds((prev) =>
-                prev.filter((groceryId) => groceryId !== id)
-            );
+            try {
+                if (!isEmpty(uid)) {
+                    const userRef = doc(firestore, 'users', uid);
+                    const userDoc = await getDoc(userRef);
+                    const favoriteGroceries =
+                        userDoc.get('favoriteGroceries') || [];
+                    const index = favoriteGroceries.indexOf(id);
+                    favoriteGroceries.splice(index, 1);
+                    await updateDoc(userRef, { favoriteGroceries });
+                    setFavoriteGroceriesIds((prev) =>
+                        prev.filter((groceryId) => groceryId !== id)
+                    );
+                }
+            } catch (error) {
+                console.error(error);
+            }
         },
-        [isFavoriteGrocery]
+        [isFavoriteGrocery, uid]
     );
 
     useEffect(() => {
