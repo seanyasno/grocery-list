@@ -14,7 +14,7 @@ export const GroceriesCardsList: React.FC<Props> = (props) => {
 
     return (
         <Grid container spacing={2}>
-            {groceries.map((grocery, index) => (
+            {groceries?.map((grocery, index) => (
                 <Grid
                     item
                     xs={6}

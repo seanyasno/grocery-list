@@ -1,29 +1,27 @@
 import { useState } from 'react';
 
+import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 
+import { Grocery } from '@/abstraction';
 import { Footer, ResponsiveAppBar } from '@/components';
-import { firestore } from '@/config';
 import { FavoriteGroceriesProvider, ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
 import { LiveBillCard } from '@/features/live-bill';
 import { useUser } from '@/hooks';
+import { fetchGrocery } from '@/requests/chp-requests/chp-requests';
 import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
+import { groceryRequestFormatter } from '@/utils';
 import { Box, Grid } from '@mui/material';
 
-const groceries = [
-    { name: 'תפוח', price: 1.9, id: 'a' },
-    { name: 'ענבים', price: 2.99, id: 'b' },
-    { name: 'במבה פרו', price: 6, id: 'chp_temp_7290115203172' },
-    { name: 'קוקה קולה', price: 3.0, id: 'c' },
-    { name: 'מיץ תפוזים', price: 5.99, id: 'd' },
-    { name: 'אוריאו', price: 9.99, id: 'e' },
-    { name: 'עוף', price: 6.99, id: 'f' },
-];
+type Props = {
+    groceries: Grocery[];
+};
 
-const HomePage = () => {
+const HomePage: NextPage<Props> = (props) => {
+    const { groceries } = props;
     const [layout, setLayout] = useState(1);
     const [user] = useUser('8YAcs0WvWQMCr0ki6F9QYXNDNvG3');
 
@@ -140,3 +138,35 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+export const getStaticProps: GetStaticProps = async () => {
+    const barcodes = [
+        '7290111564956',
+        '7290115209198',
+        '7290000288024',
+        '2007975',
+        '7290011017866',
+        '7290110115296',
+    ];
+
+    try {
+        const requests = barcodes.map((barcode) => fetchGrocery(barcode));
+        const responses = await Promise.all(requests);
+        const groceries = responses.map((response) =>
+            groceryRequestFormatter(response.data)
+        );
+
+        return {
+            props: {
+                groceries,
+            },
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            props: {
+                groceries: [],
+            },
+        };
+    }
+};

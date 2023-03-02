@@ -36,8 +36,8 @@ export const GroceryCategoryItem: React.FC<Props> = (props) => {
                     layout={'fill'}
                     style={{
                         padding: '16px',
+                        objectFit: 'contain',
                     }}
-                    objectFit={'contain'}
                     sizes={'100%'}
                 />
             </StyledIconButton>

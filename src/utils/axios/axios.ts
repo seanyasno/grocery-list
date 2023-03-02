@@ -29,6 +29,7 @@ chpInstance.interceptors.response.use(
                 response.data?.contents === 'token expired')
         ) {
             try {
+                console.log('here', response.data);
                 const tokenResponse = await axios.get(
                     'http://api-2.chp.co.il/api/login',
                     {
