@@ -33,8 +33,8 @@ chpInstance.interceptors.response.use(
                     'http://api-2.chp.co.il/api/login',
                     {
                         params: {
-                            u_n: process.env.CHP_USERNAME,
-                            p_s: process.env.CHP_PASSWORD,
+                            u_n: process.env.NEXT_PUBLIC_CHP_USERNAME,
+                            p_s: process.env.NEXT_PUBLIC_CHP_PASSWORD,
                         },
                     }
                 );
