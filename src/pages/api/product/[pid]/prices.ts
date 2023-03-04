@@ -17,7 +17,7 @@ export default async function handler(
         const response = await chpInstance.get('/city_prices', {
             params: {
                 code: pid,
-                city: 'internet',
+                city: 'ראשון לציון',
             },
         });
         res.status(200).json(response.data);

@@ -9,7 +9,30 @@ import {
 import React from 'react';
 
 import { CartItem, Grocery } from '@/abstraction';
-import { cloneWith, isEmpty } from 'lodash';
+import {
+    filterStoreWithLackOfItems,
+    getTopCheapestStores,
+    reformatData,
+    summarizeData,
+} from '@/utils';
+import axios from 'axios';
+import {
+    chain,
+    cloneWith,
+    every,
+    findKey,
+    flatten,
+    forEach,
+    groupBy,
+    isEmpty,
+    keyBy,
+    keys,
+    map,
+    mapValues,
+    pickBy,
+    sortBy,
+    sumBy,
+} from 'lodash';
 
 type ContextProps = {
     cart: CartItem[];
@@ -19,6 +42,8 @@ type ContextProps = {
     removeGrocery: (id: string, amount?: number) => void;
     resetCart: () => void;
     getAmountOfGrocery: (id: string) => number;
+
+    test: () => Promise<void>;
 };
 
 export const ShoppingCartContext = createContext<ContextProps>({
@@ -28,6 +53,7 @@ export const ShoppingCartContext = createContext<ContextProps>({
     removeGrocery: (id: string) => {},
     resetCart: () => {},
     getAmountOfGrocery: (id: string) => 0,
+    test: () => Promise.resolve(),
 });
 
 type Props = {};
@@ -112,6 +138,43 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
     useEffect(() => {
         if (cart !== undefined) {
             localStorage.setItem('cart', JSON.stringify(cart));
+
+            (async () => {})();
+        }
+    }, [cart]);
+
+    const test = useCallback(async () => {
+        try {
+            const groceriesIds = cart.map((item) => item.grocery.id);
+            const requests = groceriesIds.map((id) =>
+                axios
+                    .get(`/api/product/${id}/prices`)
+                    .then((res) => ({ [id]: res.data }))
+            );
+
+            const prices = await Promise.all(requests);
+            const jsonObject = prices.reduce((acc, cur) => {
+                const key = Object.keys(cur)[0];
+                acc[key] = cur[key]['contents']['search_results'];
+                return acc;
+            }, {});
+
+            // first format of the data to make it easier to work with
+            const grouped = reformatData(jsonObject as []);
+
+            // calculate the total price of each store
+            const cheapestStores = summarizeData(grouped);
+
+            // Filter out the stores that don't have all the groceries
+            const filteredCheapestStores = filterStoreWithLackOfItems(
+                cheapestStores,
+                groceriesIds
+            );
+
+            const chainsArray = getTopCheapestStores(filteredCheapestStores, 3);
+            console.log(JSON.stringify(chainsArray, null, 2));
+        } catch (error) {
+            console.error(error);
         }
     }, [cart]);
 
@@ -124,6 +187,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
                 removeGrocery,
                 resetCart,
                 getAmountOfGrocery,
+                test,
             }}
         >
             {children}

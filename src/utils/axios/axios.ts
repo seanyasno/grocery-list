@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { LocalStorage } from 'node-localstorage';
-import { log } from 'util';
 
 export const chpInstance = axios.create({
     baseURL: 'http://api-2.chp.co.il/api/',

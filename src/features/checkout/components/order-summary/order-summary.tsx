@@ -18,7 +18,7 @@ type Props = {
 
 export const OrderSummary: React.FC<Props> = (props) => {
     const { vatRate = 0 } = props;
-    const { cart, totalPrice } = useContext(ShoppingCartContext);
+    const { cart, totalPrice, test } = useContext(ShoppingCartContext);
 
     const subTotal = useMemo(
         () => totalPrice / (1 + (vatRate === 0 ? 0 : vatRate / 100)),
@@ -93,7 +93,7 @@ export const OrderSummary: React.FC<Props> = (props) => {
                 </Typography>
             </Stack>
 
-            <Button variant={'contained'} fullWidth>
+            <Button variant={'contained'} fullWidth onClick={test}>
                 {buttonLabel}
             </Button>
         </Container>

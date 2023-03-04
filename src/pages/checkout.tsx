@@ -6,7 +6,7 @@ import { Footer, ResponsiveAppBar } from '@/components';
 import { ShoppingCartProvider } from '@/contexts';
 import { CheckoutList, OrderSummary } from '@/features/checkout';
 import { theme } from '@/styles/theme';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 const CheckoutPage: NextPage = () => {
     return (
