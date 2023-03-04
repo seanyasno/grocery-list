@@ -23,7 +23,7 @@ const CheckoutPage: NextPage = () => {
                             padding: '20px',
                         },
                     }}
-                    columnSpacing={2}
+                    spacing={2}
                 >
                     <Grid
                         item

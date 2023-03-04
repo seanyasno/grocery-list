@@ -146,6 +146,9 @@ const HomePage: NextPage<Props> = (props) => {
                                 padding: '20px 0',
                                 zIndex: 9999,
                                 display: { xs: 'block', md: 'none' },
+                                '&:hover': {
+                                    backgroundColor: theme.palette.primary.main,
+                                },
                             }}
                             onClick={() => setOpenBill((value) => !value)}
                         >
