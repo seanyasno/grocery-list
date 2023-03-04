@@ -10,7 +10,7 @@ export const chpInstance = axios.create({
     },
 });
 
-let token = '';
+let token = '1677967426854604496';
 
 chpInstance.interceptors.request.use(async (config) => {
     console.log('token', token);

@@ -34,27 +34,38 @@ export const StyledExpandButton = styled(IconButton)`
     }
 `;
 
-export const StyledContainer = styled.div<{ expanded: boolean }>`
+export const StyledContainer = styled.div<{
+    expanded: boolean;
+    mobile: boolean;
+}>`
     position: relative;
     display: flex;
-    width: max-content;
+    width: ${({ mobile }) => (mobile ? 'unset' : 'max-content')};
     box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.11);
     border-radius: 16px;
     padding: ${({ expanded }) => (expanded ? '25px 25px 0 25px' : '25px')};
-    max-width: 395px;
-    min-width: 395px;
-    height: ${({ expanded }) => (expanded ? '80vh' : 'unset')};
+    max-width: ${({ mobile }) => (mobile ? 'unset' : '395px')};
+    min-width: ${({ mobile }) => (mobile ? 'unset' : '395px')};
+    height: ${({ expanded, mobile }) =>
+        mobile ? '100%' : expanded ? '80vh' : 'unset'};
     flex-direction: column;
     overflow-y: auto;
 `;
 
 type Props = {
     expanded?: boolean;
+    mobile?: boolean;
+    showExpandButton?: boolean;
     onExpandClick?: () => void;
 };
 
 export const LiveBillCard: React.FC<Props> = (props) => {
-    const { expanded, onExpandClick } = props;
+    const {
+        expanded,
+        mobile = false,
+        showExpandButton = true,
+        onExpandClick,
+    } = props;
     const { totalPrice } = useContext(ShoppingCartContext);
     const router = useRouter();
 
@@ -64,17 +75,20 @@ export const LiveBillCard: React.FC<Props> = (props) => {
         <Box
             sx={{
                 position: 'relative',
+                width: '100%',
             }}
         >
-            <StyledExpandButton color={'primary'} onClick={onExpandClick}>
-                {expanded ? (
-                    <IoIosArrowUp size={22} />
-                ) : (
-                    <IoIosArrowDown size={22} />
-                )}
-            </StyledExpandButton>
+            {showExpandButton && (
+                <StyledExpandButton color={'primary'} onClick={onExpandClick}>
+                    {expanded ? (
+                        <IoIosArrowUp size={22} />
+                    ) : (
+                        <IoIosArrowDown size={22} />
+                    )}
+                </StyledExpandButton>
+            )}
 
-            <StyledContainer expanded={expanded}>
+            <StyledContainer expanded={expanded} mobile={mobile}>
                 <Stack
                     direction={'row'}
                     justifyContent={'space-between'}

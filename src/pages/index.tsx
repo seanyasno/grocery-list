@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+
 import { Grocery } from '@/abstraction';
 import { Footer, ResponsiveAppBar } from '@/components';
 import { auth } from '@/config';
@@ -15,7 +17,7 @@ import { fetchGrocery } from '@/requests/chp-requests/chp-requests';
 import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
 import { groceryRequestFormatter } from '@/utils';
-import { Box, Grid } from '@mui/material';
+import { Box, Dialog, Grid, IconButton } from '@mui/material';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 type Props = {
@@ -27,6 +29,7 @@ const HomePage: NextPage<Props> = (props) => {
     const [layout, setLayout] = useState(1);
     const [user] = useAuthState(auth);
     const [userData] = useUser(user?.uid);
+    const [openBill, setOpenBill] = useState(false);
 
     return (
         <>
@@ -132,6 +135,43 @@ const HomePage: NextPage<Props> = (props) => {
                                 )}
                             </Grid>
                         </Box>
+
+                        <IconButton
+                            sx={{
+                                position: 'fixed',
+                                left: 0,
+                                top: '50%',
+                                backgroundColor: theme.palette.primary.main,
+                                borderRadius: '0 20px 20px 0',
+                                padding: '20px 0',
+                                zIndex: 9999,
+                                display: { xs: 'block', md: 'none' },
+                            }}
+                            onClick={() => setOpenBill((value) => !value)}
+                        >
+                            {openBill ? (
+                                <IoIosArrowForward color={'#fff'} size={40} />
+                            ) : (
+                                <IoIosArrowBack color={'#fff'} size={40} />
+                            )}
+                        </IconButton>
+
+                        <Dialog open={openBill} fullScreen>
+                            <Box
+                                sx={{
+                                    padding: '20px',
+                                    display: 'flex',
+                                    flex: 1,
+                                    width: '100%',
+                                }}
+                            >
+                                <LiveBillCard
+                                    mobile
+                                    expanded
+                                    showExpandButton={false}
+                                />
+                            </Box>
+                        </Dialog>
                     </main>
                 </FavoriteGroceriesProvider>
             </ShoppingCartProvider>
