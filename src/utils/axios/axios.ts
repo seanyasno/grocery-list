@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { LocalStorage } from 'node-localstorage';
 
 export const chpInstance = axios.create({
     baseURL: 'http://api-2.chp.co.il/api/',
@@ -11,10 +10,9 @@ export const chpInstance = axios.create({
     },
 });
 
-const localStorage = new LocalStorage('./scratch');
+let token = '';
 
 chpInstance.interceptors.request.use(async (config) => {
-    const token = localStorage.getItem('token');
     console.log('token', token);
     config.params = { ...config.params, token };
     return config;
@@ -38,10 +36,7 @@ chpInstance.interceptors.response.use(
                         },
                     }
                 );
-                localStorage.setItem(
-                    'token',
-                    tokenResponse.data.contents.token
-                );
+                token = tokenResponse.data.contents.token;
                 response.config.params.token =
                     tokenResponse.data.contents.token;
                 return chpInstance(response.config);
