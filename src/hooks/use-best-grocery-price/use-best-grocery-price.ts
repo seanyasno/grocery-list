@@ -8,7 +8,9 @@ export const useBestGroceryPrice = (id: string) => {
         queryFn: async () => {
             try {
                 const response = await axios.get(`/api/product/${id}/prices`);
-                return response.data?.contents?.search_results?.[0];
+                return response.data?.contents?.search_results?.[
+                    response.data?.contents?.search_results.length - 1
+                ];
             } catch (error) {
                 console.error(error);
                 return null;
