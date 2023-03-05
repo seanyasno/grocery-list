@@ -63,7 +63,12 @@ export const SearchBar: React.FC<Props> = (props) => {
                 />
 
                 {showDelete ? (
-                    <IconButton onClick={onDelete}>
+                    <IconButton
+                        onClick={() => {
+                            onDelete?.();
+                            setGroceryName('');
+                        }}
+                    >
                         <TiDelete
                             color={theme.palette.primary.main}
                             size={20}
