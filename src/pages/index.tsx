@@ -1,22 +1,36 @@
+import { useState } from 'react';
+
+import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+
+import { Grocery } from '@/abstraction';
 import { Footer, ResponsiveAppBar } from '@/components';
+import { auth } from '@/config';
+import { FavoriteGroceriesProvider, ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
 import { GroceriesCardsList } from '@/features/grocery-item';
+import { LiveBillCard } from '@/features/live-bill';
+import { useUser } from '@/hooks';
+import { fetchGrocery } from '@/requests/chp-requests/chp-requests';
 import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
-import { Box } from '@mui/material';
+import { groceryRequestFormatter } from '@/utils';
+import { Box, Dialog, Grid, IconButton } from '@mui/material';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-const groceries = [
-    { name: 'תפוח', price: 1.9, id: '' },
-    { name: 'ענבים', price: 2.99, id: '' },
-    { name: 'קוקה קולה', price: 3.0, id: '' },
-    { name: 'מיץ תפוזים', price: 5.99, id: '' },
-    { name: 'אוריאו', price: 9.99, id: '' },
-    { name: 'עוף', price: 6.99, id: '' },
-];
+type Props = {
+    groceries: Grocery[];
+};
 
-export default function Home() {
+const HomePage: NextPage<Props> = (props) => {
+    const { groceries } = props;
+    const [layout, setLayout] = useState(1);
+    const [user] = useAuthState(auth);
+    const [userData] = useUser(user?.uid);
+    const [openBill, setOpenBill] = useState(false);
+
     return (
         <>
             <Head>
@@ -32,30 +46,174 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ResponsiveAppBar />
-
-            <main className={styles.main}>
-                <Box
-                    sx={{
-                        [theme.breakpoints.up('sm')]: {
-                            padding: '30px',
-                        },
-                    }}
+            <ShoppingCartProvider>
+                <FavoriteGroceriesProvider
+                    uid={user?.uid}
+                    initialFavoriteGroceriesIds={userData?.favoriteGroceries}
+                    loadFromLocalStorage={false}
                 >
-                    <Box
-                        sx={{
-                            marginBottom: '40px',
-                            width: '100%',
-                            display: 'flex',
-                        }}
-                    >
-                        <GroceriesCategoriesList />
-                    </Box>
-                    <GroceriesCardsList groceries={groceries} />
-                </Box>
-            </main>
+                    <ResponsiveAppBar />
+
+                    <main className={styles.main}>
+                        <Box
+                            sx={{
+                                [theme.breakpoints.up('sm')]: {
+                                    padding: '30px',
+                                },
+                            }}
+                        >
+                            <Grid container columnSpacing={3}>
+                                <Grid
+                                    item
+                                    xs={layout === 1 ? 12 : true}
+                                    height={layout === 1 ? '100%' : '80vh'}
+                                    overflow={layout === 1 ? 'unset' : 'auto'}
+                                >
+                                    <Grid
+                                        container
+                                        spacing={3}
+                                        display={'flex'}
+                                    >
+                                        <Grid
+                                            item
+                                            xs={layout === 1 ? true : 12}
+                                            flexGrow={1}
+                                            flex={1}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    marginBottom: '40px',
+                                                    width: '100%',
+                                                    display: 'flex',
+                                                }}
+                                            >
+                                                <GroceriesCategoriesList />
+                                            </Box>
+                                        </Grid>
+
+                                        {layout === 1 && (
+                                            <Grid
+                                                item
+                                                display={{
+                                                    xs: 'none',
+                                                    md: 'block',
+                                                }}
+                                            >
+                                                <LiveBillCard
+                                                    onExpandClick={() =>
+                                                        setLayout((prev) =>
+                                                            prev === 1 ? 2 : 1
+                                                        )
+                                                    }
+                                                />
+                                            </Grid>
+                                        )}
+
+                                        <Grid item>
+                                            <GroceriesCardsList
+                                                groceries={groceries}
+                                                shrink={layout !== 1}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+
+                                {layout !== 1 && (
+                                    <Grid
+                                        item
+                                        display={{ xs: 'none', md: 'block' }}
+                                    >
+                                        <LiveBillCard
+                                            expanded={layout !== 1}
+                                            onExpandClick={() =>
+                                                setLayout((prev) =>
+                                                    prev === 1 ? 2 : 1
+                                                )
+                                            }
+                                        />
+                                    </Grid>
+                                )}
+                            </Grid>
+                        </Box>
+
+                        <IconButton
+                            sx={{
+                                position: 'fixed',
+                                left: 0,
+                                top: '50%',
+                                backgroundColor: theme.palette.primary.main,
+                                borderRadius: '0 20px 20px 0',
+                                padding: '20px 0',
+                                zIndex: 9999,
+                                display: { xs: 'block', md: 'none' },
+                                '&:hover': {
+                                    backgroundColor: theme.palette.primary.main,
+                                },
+                            }}
+                            onClick={() => setOpenBill((value) => !value)}
+                        >
+                            {openBill ? (
+                                <IoIosArrowForward color={'#fff'} size={40} />
+                            ) : (
+                                <IoIosArrowBack color={'#fff'} size={40} />
+                            )}
+                        </IconButton>
+
+                        <Dialog open={openBill} fullScreen>
+                            <Box
+                                sx={{
+                                    padding: '20px',
+                                    display: 'flex',
+                                    flex: 1,
+                                    width: '100%',
+                                }}
+                            >
+                                <LiveBillCard
+                                    mobile
+                                    expanded
+                                    showExpandButton={false}
+                                />
+                            </Box>
+                        </Dialog>
+                    </main>
+                </FavoriteGroceriesProvider>
+            </ShoppingCartProvider>
 
             <Footer />
         </>
     );
-}
+};
+
+export default HomePage;
+
+export const getStaticProps: GetStaticProps = async () => {
+    const barcodes = [
+        '7290111564956',
+        '7290115209198',
+        '7290000288024',
+        '2007975',
+        '7290011017866',
+        '7290110115296',
+    ];
+
+    try {
+        const requests = barcodes.map((barcode) => fetchGrocery(barcode));
+        const responses = await Promise.all(requests);
+        const groceries = responses.map((response) =>
+            groceryRequestFormatter(response.data)
+        );
+
+        return {
+            props: {
+                groceries,
+            },
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            props: {
+                groceries: [],
+            },
+        };
+    }
+};
