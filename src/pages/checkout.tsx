@@ -4,9 +4,13 @@ import { NextPage } from 'next';
 
 import { Footer, ResponsiveAppBar } from '@/components';
 import { ShoppingCartProvider } from '@/contexts';
-import { CheckoutList, OrderSummary } from '@/features/checkout';
+import {
+    CheckoutList,
+    OrderSummary,
+    PriceComparison,
+} from '@/features/checkout';
 import { theme } from '@/styles/theme';
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 const CheckoutPage: NextPage = () => {
     return (
@@ -44,6 +48,9 @@ const CheckoutPage: NextPage = () => {
                             md: 2,
                         }}
                     >
+                        <Box sx={{ marginBottom: '12px' }}>
+                            <PriceComparison />
+                        </Box>
                         <OrderSummary vatRate={17} />
                     </Grid>
                 </Grid>

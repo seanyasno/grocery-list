@@ -1,4 +1,6 @@
 import {
+    CartItem,
+    Chain,
     Chains,
     FormattedGroceryItem,
     GroceryItemRequestFormat,
@@ -50,7 +52,10 @@ export const reformatData = (data: GroceryItemRequestFormat[]): Chains => {
     );
 };
 
-export const summarizeData = (data: Chains): SummarizedChainStores => {
+export const summarizeData = (
+    data: Chains,
+    cart: CartItem[]
+): SummarizedChainStores => {
     const cheapestStores: SummarizedChainStores = {};
 
     forEach(data, (chain, chainName) => {
@@ -61,7 +66,10 @@ export const summarizeData = (data: Chains): SummarizedChainStores => {
             const items: Store = {};
 
             forEach(store, (item, itemId) => {
-                const itemPrice = item.discountedPrice || item.price;
+                const itemPrice =
+                    (item.discountedPrice || item.price) *
+                    cart.find((cartItem) => cartItem.grocery.id === itemId)
+                        ?.amount;
                 totalPrice += Number(itemPrice);
                 items[itemId] = item;
             });
@@ -96,7 +104,7 @@ export const filterStoreWithLackOfItems = (
 export const getTopCheapestStores = (
     stores: SummarizedChainStores,
     amount = 3
-) => {
+): Chain[] => {
     // Get all the stores as an array of { chain, store, totalPrice } objects
     const storesArray = Object.keys(stores).flatMap((chain) =>
         Object.keys(stores[chain]).map((store) => ({

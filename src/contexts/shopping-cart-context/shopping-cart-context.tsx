@@ -8,7 +8,7 @@ import {
 } from 'react';
 import React from 'react';
 
-import { CartItem, Grocery } from '@/abstraction';
+import { CartItem, Chain, Grocery, Store } from '@/abstraction';
 import {
     filterStoreWithLackOfItems,
     getTopCheapestStores,
@@ -16,23 +16,7 @@ import {
     summarizeData,
 } from '@/utils';
 import axios from 'axios';
-import {
-    chain,
-    cloneWith,
-    every,
-    findKey,
-    flatten,
-    forEach,
-    groupBy,
-    isEmpty,
-    keyBy,
-    keys,
-    map,
-    mapValues,
-    pickBy,
-    sortBy,
-    sumBy,
-} from 'lodash';
+import { cloneWith, isEmpty } from 'lodash';
 
 type ContextProps = {
     cart: CartItem[];
@@ -42,8 +26,7 @@ type ContextProps = {
     removeGrocery: (id: string, amount?: number) => void;
     resetCart: () => void;
     getAmountOfGrocery: (id: string) => number;
-
-    test: () => Promise<void>;
+    getTopCheapestChainStore: (amount: number) => Promise<Chain[]>;
 };
 
 export const ShoppingCartContext = createContext<ContextProps>({
@@ -53,7 +36,7 @@ export const ShoppingCartContext = createContext<ContextProps>({
     removeGrocery: (id: string) => {},
     resetCart: () => {},
     getAmountOfGrocery: (id: string) => 0,
-    test: () => Promise.resolve(),
+    getTopCheapestChainStore: () => Promise.resolve([]),
 });
 
 type Props = {};
@@ -143,40 +126,43 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
         }
     }, [cart]);
 
-    const test = useCallback(async () => {
-        try {
-            const groceriesIds = cart.map((item) => item.grocery.id);
-            const requests = groceriesIds.map((id) =>
-                axios
-                    .get(`/api/product/${id}/prices`)
-                    .then((res) => ({ [id]: res.data }))
-            );
+    const getTopCheapestChainStore = useCallback(
+        async (amount: number) => {
+            try {
+                const groceriesIds = cart.map((item) => item.grocery.id);
+                const requests = groceriesIds.map((id) =>
+                    axios
+                        .get(`/api/product/${id}/prices`)
+                        .then((res) => ({ [id]: res.data }))
+                );
 
-            const prices = await Promise.all(requests);
-            const jsonObject = prices.reduce((acc, cur) => {
-                const key = Object.keys(cur)[0];
-                acc[key] = cur[key]['contents']['search_results'];
-                return acc;
-            }, {});
+                const prices = await Promise.all(requests);
+                const jsonObject = prices.reduce((acc, cur) => {
+                    const key = Object.keys(cur)[0];
+                    acc[key] = cur[key]['contents']['search_results'];
+                    return acc;
+                }, {});
 
-            // first format of the data to make it easier to work with
-            const grouped = reformatData(jsonObject as []);
+                // first format of the data to make it easier to work with
+                const grouped = reformatData(jsonObject as []);
 
-            // calculate the total price of each store
-            const cheapestStores = summarizeData(grouped);
+                // calculate the total price of each store
+                const cheapestStores = summarizeData(grouped, cart);
 
-            // Filter out the stores that don't have all the groceries
-            const filteredCheapestStores = filterStoreWithLackOfItems(
-                cheapestStores,
-                groceriesIds
-            );
+                // Filter out the stores that don't have all the groceries
+                const filteredCheapestStores = filterStoreWithLackOfItems(
+                    cheapestStores,
+                    groceriesIds
+                );
 
-            const chainsArray = getTopCheapestStores(filteredCheapestStores, 3);
-            console.log(JSON.stringify(chainsArray, null, 2));
-        } catch (error) {
-            console.error(error);
-        }
-    }, [cart]);
+                return getTopCheapestStores(filteredCheapestStores, amount);
+            } catch (error) {
+                console.error(error);
+                return [];
+            }
+        },
+        [cart]
+    );
 
     return (
         <ShoppingCartContext.Provider
@@ -187,7 +173,7 @@ export const ShoppingCartProvider: React.FC<PropsWithChildren<Props>> = (
                 removeGrocery,
                 resetCart,
                 getAmountOfGrocery,
-                test,
+                getTopCheapestChainStore,
             }}
         >
             {children}
