@@ -67,9 +67,13 @@ export const summarizeData = (
 
             forEach(store, (item, itemId) => {
                 const itemPrice =
-                    (item.discountedPrice || item.price) *
+                    item.price *
                     cart.find((cartItem) => cartItem.grocery.id === itemId)
                         ?.amount;
+                // const itemPrice =
+                //     (item.discountedPrice || item.price) *
+                //     cart.find((cartItem) => cartItem.grocery.id === itemId)
+                //         ?.amount;
                 totalPrice += Number(itemPrice);
                 items[itemId] = item;
             });

@@ -12,7 +12,7 @@ export const groceryRequestFormatter = (data): Grocery => {
         return {
             id: item.code,
             name: item.description.split(',').slice(0, -1).join(','),
-            price: Number(item.price_range?.[0] ?? '0'),
+            price: Number(item.price_range?.[1] ?? '0'),
         };
     }
 };
