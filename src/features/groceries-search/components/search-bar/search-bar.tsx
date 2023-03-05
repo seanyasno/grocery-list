@@ -2,11 +2,12 @@ import React, { ChangeEvent, useCallback, useState } from 'react';
 
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { CiSearch } from 'react-icons/ci';
+import { TiDelete } from 'react-icons/ti';
 
 import { GroceryItemCard } from '@/features/grocery-item';
 import { useBestGroceryPrice, useGroceryOptions } from '@/hooks';
 import { theme } from '@/styles/theme';
-import { Autocomplete, Dialog } from '@mui/material';
+import { Autocomplete, Dialog, IconButton } from '@mui/material';
 import { isEmpty } from 'lodash';
 
 import {
@@ -16,7 +17,14 @@ import {
     StyledInputBase,
 } from './search-bar-styles';
 
-export const SearchBar: React.FC = () => {
+type Props = {
+    fullWidth?: boolean;
+    showDelete?: boolean;
+    onDelete?: () => void;
+};
+
+export const SearchBar: React.FC<Props> = (props) => {
+    const { fullWidth = false, showDelete = false, onDelete } = props;
     const [groceryName, setGroceryName] = useState<string>('');
     const [selectedGrocery, setSelectedGrocery] = useState<any>(null);
 
@@ -31,7 +39,7 @@ export const SearchBar: React.FC = () => {
 
     return (
         <>
-            <Search>
+            <Search fullWidth={fullWidth}>
                 <SearchIconWrapper>
                     <CiSearch color={theme.palette.primary.main} size={20} />
                 </SearchIconWrapper>
@@ -54,12 +62,21 @@ export const SearchBar: React.FC = () => {
                     }}
                 />
 
-                <ListIconWrapper>
-                    <AiOutlineUnorderedList
-                        color={theme.palette.primary.main}
-                        size={20}
-                    />
-                </ListIconWrapper>
+                {showDelete ? (
+                    <IconButton onClick={onDelete}>
+                        <TiDelete
+                            color={theme.palette.primary.main}
+                            size={20}
+                        />
+                    </IconButton>
+                ) : (
+                    <ListIconWrapper onClick={() => alert('boo')}>
+                        <AiOutlineUnorderedList
+                            color={theme.palette.primary.main}
+                            size={20}
+                        />
+                    </ListIconWrapper>
+                )}
             </Search>
 
             <Dialog

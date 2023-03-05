@@ -2,23 +2,25 @@ import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { alpha, InputBase, TextField } from '@mui/material';
 
-export const Search = styled('div')(() => ({
-    position: 'relative',
-    borderRadius: '10px',
-    backgroundColor: '#F8F8F8',
-    '&:hover': {
-        backgroundColor: alpha('#F8F8F8', 0.75),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-    },
-    width: '60%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-}));
+export const Search = styled('div')<{ fullWidth: boolean }>(
+    ({ fullWidth }) => ({
+        position: 'relative',
+        borderRadius: '10px',
+        backgroundColor: '#F8F8F8',
+        '&:hover': {
+            backgroundColor: alpha('#F8F8F8', 0.75),
+        },
+        marginRight: fullWidth ? 0 : theme.spacing(2),
+        marginLeft: 0,
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(3),
+        },
+        width: fullWidth ? '100%' : '60%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    })
+);
 
 export const SearchIconWrapper = styled('div')(() => ({
     padding: theme.spacing(0, 2),

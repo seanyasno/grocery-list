@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { BiMenuAltLeft } from 'react-icons/bi';
 import { CiSearch } from 'react-icons/ci';
@@ -19,6 +19,7 @@ import {
     MenuItem,
     Toolbar,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -54,6 +55,8 @@ const pages: PageItem[] = [
 
 export const ResponsiveAppBar: React.FC = () => {
     const [user] = useAuthState(auth);
+    const matches = useMediaQuery(theme.breakpoints.up('sm'));
+    const [showSearch, setShowSearch] = useState(false);
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null
@@ -76,38 +79,50 @@ export const ResponsiveAppBar: React.FC = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <IconButton
-                        sx={{
-                            display: { xs: 'flex', sm: 'none' },
-                            padding: 0,
-                        }}
-                    >
-                        <CiSearch
-                            color={theme.palette.primary.main}
-                            size={24}
-                        />
-                    </IconButton>
+                    {!showSearch && (
+                        <>
+                            <IconButton
+                                sx={{
+                                    display: { xs: 'flex', sm: 'none' },
+                                    padding: 0,
+                                }}
+                                onClick={() => setShowSearch(true)}
+                            >
+                                <CiSearch
+                                    color={theme.palette.primary.main}
+                                    size={24}
+                                />
+                            </IconButton>
 
-                    <Typography
-                        variant={'h6'}
-                        noWrap
-                        component={'a'}
-                        href={'/'}
-                        color={'primary'}
-                        fontWeight={800}
-                        sx={{ textDecoration: 'none' }}
-                    >
-                        כותרת גדולה
-                    </Typography>
+                            <Typography
+                                variant={'h6'}
+                                noWrap
+                                component={'a'}
+                                href={'/'}
+                                color={'primary'}
+                                fontWeight={800}
+                                sx={{ textDecoration: 'none' }}
+                            >
+                                כותרת גדולה
+                            </Typography>
+                        </>
+                    )}
 
                     <Box
                         sx={{
-                            display: { xs: 'none', sm: 'flex' },
+                            display: {
+                                xs: showSearch ? 'flex' : 'none',
+                                sm: 'flex',
+                            },
                             flexGrow: 1,
                             justifyContent: 'center',
                         }}
                     >
-                        <SearchBar />
+                        <SearchBar
+                            fullWidth={!matches}
+                            showDelete={!matches}
+                            onDelete={() => setShowSearch(false)}
+                        />
                     </Box>
 
                     <Box
@@ -158,17 +173,22 @@ export const ResponsiveAppBar: React.FC = () => {
                             display: { xs: 'flex', md: 'none' },
                         }}
                     >
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                            sx={{ padding: 0 }}
-                        >
-                            <BiMenuAltLeft color={theme.palette.primary.main} />
-                        </IconButton>
+                        {!showSearch && (
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="inherit"
+                                sx={{ padding: 0 }}
+                            >
+                                <BiMenuAltLeft
+                                    color={theme.palette.primary.main}
+                                />
+                            </IconButton>
+                        )}
+
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
