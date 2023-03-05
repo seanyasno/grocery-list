@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
 
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { CiSearch } from 'react-icons/ci';
@@ -7,7 +7,7 @@ import { TiDelete } from 'react-icons/ti';
 import { GroceryItemCard } from '@/features/grocery-item';
 import { useBestGroceryPrice, useGroceryOptions } from '@/hooks';
 import { theme } from '@/styles/theme';
-import { Autocomplete, Dialog, IconButton } from '@mui/material';
+import { Autocomplete, Box, Dialog, IconButton, Popper } from '@mui/material';
 import { isEmpty } from 'lodash';
 
 import {
@@ -27,6 +27,7 @@ export const SearchBar: React.FC<Props> = (props) => {
     const { fullWidth = false, showDelete = false, onDelete } = props;
     const [groceryName, setGroceryName] = useState<string>('');
     const [selectedGrocery, setSelectedGrocery] = useState<any>(null);
+    const searchFieldRef = useRef<HTMLDivElement>(null);
 
     const { data } = useGroceryOptions(groceryName);
     const { data: bestSelectedGrocery } = useBestGroceryPrice(
@@ -39,7 +40,7 @@ export const SearchBar: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Search fullWidth={fullWidth}>
+            <Search ref={searchFieldRef} fullWidth={fullWidth}>
                 <SearchIconWrapper>
                     <CiSearch color={theme.palette.primary.main} size={20} />
                 </SearchIconWrapper>
@@ -53,6 +54,20 @@ export const SearchBar: React.FC<Props> = (props) => {
                             placeholder="חפש מוצרים…"
                             onChange={handleChange}
                             value={groceryName}
+                        />
+                    )}
+                    PopperComponent={(props) => (
+                        <Popper
+                            {...props}
+                            style={{
+                                width: searchFieldRef?.current?.offsetWidth,
+                            }}
+                            sx={{
+                                right: `${
+                                    showDelete ? '-14px' : '-24px'
+                                } !important`,
+                            }}
+                            placeholder={'bottom-center'}
                         />
                     )}
                     options={data?.map((option) => option) || []}

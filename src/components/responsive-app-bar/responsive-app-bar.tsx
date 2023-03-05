@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { BiMenuAltLeft } from 'react-icons/bi';
 import { CiSearch } from 'react-icons/ci';
