@@ -2,6 +2,7 @@ import React from 'react';
 
 import { NextPage } from 'next';
 
+import { LoadingPage } from '@/components';
 import {
     Background,
     BottomSection,
@@ -30,7 +31,7 @@ const Register: NextPage = () => {
     }
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <LoadingPage />;
     }
 
     return (

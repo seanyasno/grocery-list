@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
-import { Footer, ResponsiveAppBar } from '@/components';
+import { Footer, LoadingPage, ResponsiveAppBar } from '@/components';
 import { auth } from '@/config';
 import { FavoriteGroceriesProvider } from '@/contexts';
 import { PreviousOrdersList, SavedOrdersList } from '@/features/orders';
@@ -24,7 +24,7 @@ const OrdersPage: NextPage = () => {
     const router = useRouter();
 
     if (loading && !user) {
-        return <>loading...</>;
+        return <LoadingPage />;
     } else if (!user) {
         router.replace('/');
     }

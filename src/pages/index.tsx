@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { Grocery } from '@/abstraction';
-import { Footer, ResponsiveAppBar } from '@/components';
+import { Footer, LoadingPage, ResponsiveAppBar } from '@/components';
 import { auth } from '@/config';
 import { FavoriteGroceriesProvider, ShoppingCartProvider } from '@/contexts';
 import { GroceriesCategoriesList } from '@/features/groceries-categories';
@@ -18,6 +18,7 @@ import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
 import { groceryRequestFormatter } from '@/utils';
 import { Box, Dialog, Grid, IconButton } from '@mui/material';
+import { isEmpty } from 'lodash';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 type Props = {
@@ -27,9 +28,13 @@ type Props = {
 const HomePage: NextPage<Props> = (props) => {
     const { groceries } = props;
     const [layout, setLayout] = useState(1);
-    const [user] = useAuthState(auth);
+    const [user, loadingUser] = useAuthState(auth);
     const [userData] = useUser(user?.uid);
     const [openBill, setOpenBill] = useState(false);
+
+    if (isEmpty(groceries) || loadingUser) {
+        return <LoadingPage />;
+    }
 
     return (
         <>

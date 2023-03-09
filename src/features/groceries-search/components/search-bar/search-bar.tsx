@@ -9,6 +9,7 @@ import { useBestGroceryPrice, useGroceryOptions } from '@/hooks';
 import { theme } from '@/styles/theme';
 import { Autocomplete, Box, Dialog, IconButton, Popper } from '@mui/material';
 import { isEmpty } from 'lodash';
+import { PropagateLoader, PuffLoader } from 'react-spinners';
 
 import {
     ListIconWrapper,
@@ -29,10 +30,10 @@ export const SearchBar: React.FC<Props> = (props) => {
     const [selectedGrocery, setSelectedGrocery] = useState<any>(null);
     const searchFieldRef = useRef<HTMLDivElement>(null);
 
-    const { data } = useGroceryOptions(groceryName);
-    const { data: bestSelectedGrocery } = useBestGroceryPrice(
-        selectedGrocery?.id
-    );
+    const { data, isLoading: isLoadingOptions } =
+        useGroceryOptions(groceryName);
+    const { data: bestSelectedGrocery, isLoading: isLoadingBestGrocery } =
+        useBestGroceryPrice(selectedGrocery?.id);
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setGroceryName(event.target.value);
@@ -42,11 +43,40 @@ export const SearchBar: React.FC<Props> = (props) => {
         <>
             <Search ref={searchFieldRef} fullWidth={fullWidth}>
                 <SearchIconWrapper>
-                    <CiSearch color={theme.palette.primary.main} size={20} />
+                    {!isEmpty(groceryName) &&
+                    isLoadingBestGrocery &&
+                    !isLoadingOptions &&
+                    !isEmpty(selectedGrocery) ? (
+                        <PuffLoader
+                            color={theme.palette.primary.main}
+                            size={18}
+                        />
+                    ) : (
+                        <CiSearch
+                            color={theme.palette.primary.main}
+                            size={20}
+                        />
+                    )}
                 </SearchIconWrapper>
                 <Autocomplete
                     fullWidth
                     noOptionsText={'לא נמצאו תוצאות'}
+                    loading={isLoadingOptions && !isEmpty(groceryName)}
+                    loadingText={
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                width: '100%',
+                                marginBottom: '16px',
+                            }}
+                        >
+                            <PropagateLoader
+                                color={theme.palette.primary.main}
+                                size={18}
+                            />
+                        </Box>
+                    }
                     renderInput={(params) => (
                         <StyledInputBase
                             ref={params.InputProps.ref}

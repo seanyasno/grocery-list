@@ -6,9 +6,10 @@ import { ShoppingCartContext } from '@/contexts';
 import { theme } from '@/styles/theme';
 import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
+import { PuffLoader } from 'react-spinners';
 
 const Container = styled.div`
     background: rgba(255, 154, 0, 0.14);
@@ -19,7 +20,7 @@ const Container = styled.div`
 export const PriceComparison: React.FC = () => {
     const { cart, getTopCheapestChainStore } = useContext(ShoppingCartContext);
 
-    const { data: topCheapestStores } = useQuery({
+    const { data: topCheapestStores, isLoading } = useQuery({
         queryKey: ['top-cheapest-stores', cart],
         queryFn: async () => {
             try {
@@ -61,24 +62,37 @@ export const PriceComparison: React.FC = () => {
                 </Typography>
             </Stack>
             <Divider sx={{ margin: '12px 0' }} />
-            <Stack>
-                {topCheapestStores?.map((chain, index) => (
-                    <Stack
-                        direction={'row'}
-                        justifyContent={'space-between'}
-                        key={index}
-                    >
-                        <Typography>
-                            {chain.chainName + ' ' + chain.storeName}
-                        </Typography>
-                        <Typography>
-                            {currencyFormatter
-                                .from(Number(chain.totalPrice ?? '0'))
-                                ?.toString()}
-                        </Typography>
-                    </Stack>
-                ))}
-            </Stack>
+
+            {isLoading ? (
+                <Box
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <PuffLoader color={theme.palette.primary.main} size={24} />
+                </Box>
+            ) : (
+                <Stack>
+                    {topCheapestStores?.map((chain, index) => (
+                        <Stack
+                            direction={'row'}
+                            justifyContent={'space-between'}
+                            key={index}
+                        >
+                            <Typography>
+                                {chain.chainName + ' ' + chain.storeName}
+                            </Typography>
+                            <Typography>
+                                {currencyFormatter
+                                    .from(Number(chain.totalPrice ?? '0'))
+                                    ?.toString()}
+                            </Typography>
+                        </Stack>
+                    ))}
+                </Stack>
+            )}
         </Container>
     );
 };

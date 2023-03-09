@@ -21,6 +21,7 @@ export default async function handler(
             },
         });
 
+        res.setHeader('Cache-Control', 'public, max-age=3600');
         res.status(200).json(response.data);
     } catch (error) {
         res.status(400).json({ error });

@@ -8,7 +8,9 @@ import { ShoppingCartContext } from '@/contexts';
 import { CheckoutItem } from '@/features/checkout';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { Button, Divider, Stack } from '@mui/material';
+import { Box, Button, Divider, Stack } from '@mui/material';
+import { isEmpty } from 'lodash';
+import { PuffLoader } from 'react-spinners';
 
 const Container = styled.div`
     border: 1px solid #dee2e7;
@@ -27,33 +29,49 @@ export const CheckoutList: React.FC<Props> = (props) => {
 
     return (
         <Container>
-            {cart?.map((cartItem, index) => (
-                <React.Fragment key={index}>
-                    <CheckoutItem cartItem={cartItem} />
-                    <Divider sx={{ margin: '20px 0' }} />
-                </React.Fragment>
-            ))}
-            <Stack direction={'row'} justifyContent={'space-between'}>
-                <Button
-                    variant={'contained'}
-                    color={'info'}
-                    onClick={() => router.push('/')}
-                >
-                    <HiOutlineArrowRight style={{ marginLeft: '6px' }} />
-                    {backButtonLabel}
-                </Button>
-                <Button
-                    variant={'outlined'}
-                    color={'error'}
+            {isEmpty(cart) ? (
+                <Box
                     sx={{
-                        border: `1px solid ${theme.palette.error.main}`,
-                        boxShadow: 'none',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        width: '100%',
                     }}
-                    onClick={() => resetCart()}
                 >
-                    {deleteAllButtonLabel}
-                </Button>
-            </Stack>
+                    <PuffLoader color={theme.palette.primary.main} size={24} />
+                </Box>
+            ) : (
+                <>
+                    {cart?.map((cartItem, index) => (
+                        <React.Fragment key={index}>
+                            <CheckoutItem cartItem={cartItem} />
+                            <Divider sx={{ margin: '20px 0' }} />
+                        </React.Fragment>
+                    ))}
+                    <Stack direction={'row'} justifyContent={'space-between'}>
+                        <Button
+                            variant={'contained'}
+                            color={'info'}
+                            onClick={() => router.push('/')}
+                        >
+                            <HiOutlineArrowRight
+                                style={{ marginLeft: '6px' }}
+                            />
+                            {backButtonLabel}
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            color={'error'}
+                            sx={{
+                                border: `1px solid ${theme.palette.error.main}`,
+                                boxShadow: 'none',
+                            }}
+                            onClick={() => resetCart()}
+                        >
+                            {deleteAllButtonLabel}
+                        </Button>
+                    </Stack>
+                </>
+            )}
         </Container>
     );
 };
