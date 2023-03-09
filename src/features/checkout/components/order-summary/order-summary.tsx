@@ -1,9 +1,13 @@
 import React, { useContext, useMemo } from 'react';
 
 import { ShoppingCartContext } from '@/contexts';
+import { theme } from '@/styles/theme';
 import { currencyFormatter } from '@/utils';
 import styled from '@emotion/styled';
-import { Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { isEmpty } from 'lodash';
+import { PuffLoader } from 'react-spinners';
 
 export const Container = styled.div`
     padding: 22px;
@@ -18,8 +22,7 @@ type Props = {
 
 export const OrderSummary: React.FC<Props> = (props) => {
     const { vatRate = 0 } = props;
-    const { cart, totalPrice, getTopCheapestChainStore } =
-        useContext(ShoppingCartContext);
+    const { cart, totalPrice } = useContext(ShoppingCartContext);
 
     const subTotal = useMemo(
         () => totalPrice / (1 + (vatRate === 0 ? 0 : vatRate / 100)),
@@ -44,61 +47,72 @@ export const OrderSummary: React.FC<Props> = (props) => {
 
             <Divider sx={{ margin: '16px 0' }} />
 
-            <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-            >
-                <Typography
-                    fontSize={'14px'}
-                    fontWeight={500}
-                    color={'#7C8694'}
+            {isEmpty(cart) ? (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        width: '100%',
+                        marginBottom: '10px',
+                    }}
                 >
-                    {subTotalLabel}
-                    {` (${cart?.length} פריטים)`}
-                </Typography>
-                <Typography fontSize={'16px'} fontWeight={600}>
-                    {currencyFormatter.from(subTotal).toString()}
-                </Typography>
-            </Stack>
+                    <PuffLoader color={theme.palette.primary.main} size={24} />
+                </Box>
+            ) : (
+                <>
+                    <Stack
+                        direction={'row'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                    >
+                        <Typography
+                            fontSize={'14px'}
+                            fontWeight={500}
+                            color={'#7C8694'}
+                        >
+                            {subTotalLabel}
+                            {` (${cart?.length} פריטים)`}
+                        </Typography>
+                        <Typography fontSize={'16px'} fontWeight={600}>
+                            {currencyFormatter.from(subTotal).toString()}
+                        </Typography>
+                    </Stack>
 
-            <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-            >
-                <Typography
-                    fontSize={'14px'}
-                    fontWeight={500}
-                    color={'#7C8694'}
-                >
-                    {vatLabel}
-                    {` (${vatRate}%)`}
-                </Typography>
-                <Typography fontSize={'16px'} fontWeight={600}>
-                    {currencyFormatter.from(vatTotal).toString()}
-                </Typography>
-            </Stack>
+                    <Stack
+                        direction={'row'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                    >
+                        <Typography
+                            fontSize={'14px'}
+                            fontWeight={500}
+                            color={'#7C8694'}
+                        >
+                            {vatLabel}
+                            {` (${vatRate}%)`}
+                        </Typography>
+                        <Typography fontSize={'16px'} fontWeight={600}>
+                            {currencyFormatter.from(vatTotal).toString()}
+                        </Typography>
+                    </Stack>
 
-            <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                margin={'30px 0'}
-            >
-                <Typography fontSize={'16px'} fontWeight={600}>
-                    {totalLabel}
-                </Typography>
-                <Typography fontSize={'18px'} fontWeight={600}>
-                    {currencyFormatter.from(totalPrice)?.toString()}
-                </Typography>
-            </Stack>
+                    <Stack
+                        direction={'row'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                        margin={'30px 0'}
+                    >
+                        <Typography fontSize={'16px'} fontWeight={600}>
+                            {totalLabel}
+                        </Typography>
+                        <Typography fontSize={'18px'} fontWeight={600}>
+                            {currencyFormatter.from(totalPrice)?.toString()}
+                        </Typography>
+                    </Stack>
+                </>
+            )}
 
-            <Button
-                variant={'contained'}
-                fullWidth
-                onClick={() => getTopCheapestChainStore(2)}
-            >
+            <Button variant={'contained'} fullWidth>
                 {buttonLabel}
             </Button>
         </Container>

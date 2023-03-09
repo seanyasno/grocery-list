@@ -28,11 +28,11 @@ type Props = {
 const HomePage: NextPage<Props> = (props) => {
     const { groceries } = props;
     const [layout, setLayout] = useState(1);
-    const [user] = useAuthState(auth);
+    const [user, loadingUser] = useAuthState(auth);
     const [userData] = useUser(user?.uid);
     const [openBill, setOpenBill] = useState(false);
 
-    if (isEmpty(groceries)) {
+    if (isEmpty(groceries) || loadingUser) {
         return <LoadingPage />;
     }
 
