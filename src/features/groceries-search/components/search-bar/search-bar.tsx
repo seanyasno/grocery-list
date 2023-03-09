@@ -1,10 +1,4 @@
-import React, {
-    ChangeEvent,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
 
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { CiSearch } from 'react-icons/ci';
@@ -38,22 +32,12 @@ export const SearchBar: React.FC<Props> = (props) => {
 
     const { data, isLoading: isLoadingOptions } =
         useGroceryOptions(groceryName);
-    const {
-        data: bestSelectedGrocery,
-        isLoading: isLoadingBestGrocery,
-        isSuccess,
-    } = useBestGroceryPrice(selectedGrocery?.id);
+    const { data: bestSelectedGrocery, isLoading: isLoadingBestGrocery } =
+        useBestGroceryPrice(selectedGrocery?.id);
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setGroceryName(event.target.value);
     }, []);
-
-    useEffect(() => {
-        if (isSuccess) {
-            console.log('resetting');
-            setGroceryName('');
-        }
-    }, [isSuccess]);
 
     return (
         <>
