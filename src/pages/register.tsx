@@ -22,9 +22,15 @@ const Register: NextPage = () => {
     const title = 'צור חשבון חדש';
     const registerButtonLabel = 'הירשם';
 
-    const { loading, error } = useAuthValidation();
-    const { values, handleChange, setFieldValue, handleSubmit, errors } =
-        useRegisterForm();
+    const { loading, error, navigating } = useAuthValidation();
+    const {
+        values,
+        handleChange,
+        setFieldValue,
+        handleSubmit,
+        errors,
+        isSubmitting,
+    } = useRegisterForm();
 
     if (error) {
         return (
@@ -34,7 +40,7 @@ const Register: NextPage = () => {
         );
     }
 
-    if (loading) {
+    if (loading || isSubmitting || navigating) {
         return <LoadingPage />;
     }
 

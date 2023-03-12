@@ -1,5 +1,8 @@
+import { auth, firestore } from '@/config';
+import { doc, setDoc } from '@firebase/firestore';
 import { useFormik } from 'formik';
 import { isEmpty } from 'lodash';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 type RegisterInfo = {
     fullName: string;
@@ -17,6 +20,9 @@ type RegisterInfoErrors = {
 };
 
 export const useRegisterForm = () => {
+    const [createUserWithEmailAndPassword] =
+        useCreateUserWithEmailAndPassword(auth);
+
     return useFormik<RegisterInfo>({
         initialValues: {
             fullName: '',
@@ -28,20 +34,25 @@ export const useRegisterForm = () => {
             email: '',
             password: '',
         },
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            try {
+                const { user } = await createUserWithEmailAndPassword(
+                    values.email,
+                    values.password
+                );
+                delete values.password;
+                await setDoc(doc(firestore, 'users', user.uid), {
+                    ...values,
+                    favoriteGroceries: [],
+                });
+            } catch (error) {
+                console.error(error);
+            }
         },
         validate: (values) => {
             const errors: Partial<RegisterInfoErrors> = {};
-            const {
-                fullName,
-                city,
-                email,
-                password,
-                houseNumber,
-                phoneNumber,
-                street,
-            } = values;
+            const { fullName, city, email, password, phoneNumber, street } =
+                values;
 
             if (isEmpty(fullName)) {
                 errors.fullName = 'Required';
@@ -61,10 +72,6 @@ export const useRegisterForm = () => {
 
             if (isEmpty(password)) {
                 errors.password = 'Required';
-            }
-
-            if (isEmpty(houseNumber)) {
-                errors.houseNumber = 'Required';
             }
 
             if (isEmpty(phoneNumber)) {
