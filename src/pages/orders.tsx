@@ -17,7 +17,7 @@ import { ClipLoader } from 'react-spinners';
 
 const OrdersPage: NextPage = () => {
     const [currentTab, setCurrentTab] = useState(0);
-    const [user, loading] = useAuthState(auth);
+    const [user, loadingUser] = useAuthState(auth);
     const [userData] = useUser(user?.uid);
 
     const { data: groceries, isLoading: loadingGroceries } =
@@ -25,7 +25,7 @@ const OrdersPage: NextPage = () => {
 
     const router = useRouter();
 
-    if (loading && !user) {
+    if (loadingUser && !user) {
         return <LoadingPage />;
     } else if (!user) {
         router.replace('/');
@@ -87,7 +87,7 @@ const OrdersPage: NextPage = () => {
                                 width: '100%',
                             }}
                         >
-                            {loadingGroceries && !isEmpty(groceries) ? (
+                            {loadingGroceries || loadingUser ? (
                                 <ClipLoader
                                     color={theme.palette.primary.main}
                                     size={150}
