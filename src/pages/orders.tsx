@@ -31,7 +31,7 @@ const OrdersPage: NextPage = () => {
         }
 
         return loadingGroceries || loadingUser;
-    }, [userData?.favoriteGroceries, loadingGroceries, loadingUser]);
+    }, [userData, loadingGroceries, loadingUser]);
 
     if (loadingUser && !user) {
         return <LoadingPage />;
