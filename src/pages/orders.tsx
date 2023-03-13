@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -24,6 +24,14 @@ const OrdersPage: NextPage = () => {
         useGroceryByBarcode(userData?.favoriteGroceries);
 
     const router = useRouter();
+
+    const loadingFavoriteGroceries = useMemo(() => {
+        if (userData && isEmpty(userData?.favoriteGroceries)) {
+            return false;
+        }
+
+        return loadingGroceries || loadingUser;
+    }, [userData?.favoriteGroceries, loadingGroceries, loadingUser]);
 
     if (loadingUser && !user) {
         return <LoadingPage />;
@@ -87,13 +95,13 @@ const OrdersPage: NextPage = () => {
                                 width: '100%',
                             }}
                         >
-                            {loadingGroceries || loadingUser ? (
+                            {loadingFavoriteGroceries ? (
                                 <ClipLoader
                                     color={theme.palette.primary.main}
                                     size={150}
                                 />
                             ) : (
-                                (isEmpty(groceries) ||
+                                (isEmpty(userData?.favoriteGroceries) ||
                                     groceries?.length === 0) && (
                                     <Image
                                         alt={'empty favorites'}
