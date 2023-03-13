@@ -1,4 +1,5 @@
 import { auth, firestore } from '@/config';
+import { updateProfile } from '@firebase/auth';
 import { doc, setDoc } from '@firebase/firestore';
 import { useFormik } from 'formik';
 import { isEmpty } from 'lodash';
@@ -40,6 +41,9 @@ export const useRegisterForm = () => {
                     values.email,
                     values.password
                 );
+                await updateProfile(user, {
+                    displayName: values.fullName,
+                });
                 delete values.password;
                 await setDoc(doc(firestore, 'users', user.uid), {
                     ...values,
