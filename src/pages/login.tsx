@@ -44,7 +44,7 @@ const Login: NextPage = () => {
     return (
         <>
             <Head>
-                <title>דף התחברות של אתר קניות</title>
+                <title>{pageTitle}</title>
             </Head>
             <form onSubmit={handleSubmit}>
                 <Background>
