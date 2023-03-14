@@ -1,7 +1,10 @@
+import React from 'react';
+
 import type { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
 import { theme } from '@/styles/theme';
+import { reportAccessibility } from '@/utils';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -39,5 +42,8 @@ const App = ({ Component, pageProps }: AppProps) => {
         </CacheProvider>
     );
 };
+
+// noinspection JSIgnoredPromiseFromCall
+reportAccessibility(React);
 
 export default App;
