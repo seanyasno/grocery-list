@@ -6,11 +6,13 @@ import { Footer, ResponsiveAppBar } from '@/components';
 import { ShoppingCartProvider } from '@/contexts';
 import {
     CheckoutList,
+    LeftSection,
     OrderSummary,
     PriceComparison,
 } from '@/features/checkout';
 import { theme } from '@/styles/theme';
 import { Box, Grid } from '@mui/material';
+import { isEmpty } from 'lodash';
 
 const CheckoutPage: NextPage = () => {
     return (
@@ -39,20 +41,7 @@ const CheckoutPage: NextPage = () => {
                     >
                         <CheckoutList />
                     </Grid>
-                    <Grid
-                        item
-                        maxWidth={'433px'}
-                        width={'100%'}
-                        order={{
-                            xs: 1,
-                            md: 2,
-                        }}
-                    >
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <PriceComparison />
-                        </Box>
-                        <OrderSummary vatRate={17} />
-                    </Grid>
+                    <LeftSection />
                 </Grid>
             </ShoppingCartProvider>
             <Footer />

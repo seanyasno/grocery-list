@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { HiOutlineArrowRight } from 'react-icons/hi';
@@ -8,9 +9,8 @@ import { ShoppingCartContext } from '@/contexts';
 import { CheckoutItem } from '@/features/checkout';
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { Box, Button, Divider, Stack } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
-import { PuffLoader } from 'react-spinners';
 
 const Container = styled.div`
     border: 1px solid #dee2e7;
@@ -24,6 +24,7 @@ export const CheckoutList: React.FC<Props> = (props) => {
     const { cart, resetCart } = useContext(ShoppingCartContext);
     const router = useRouter();
 
+    const emptyCartLabel = 'הסל קניות שלך ריק';
     const backButtonLabel = 'חזרה לחנות';
     const deleteAllButtonLabel = 'הורד הכל מהסל';
 
@@ -34,10 +35,23 @@ export const CheckoutList: React.FC<Props> = (props) => {
                     sx={{
                         display: 'flex',
                         justifyContent: 'center',
-                        width: '100%',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                     }}
                 >
-                    <PuffLoader color={theme.palette.primary.main} size={24} />
+                    <Image
+                        src={'./svgs/undraw_empty_cart_co35.svg'}
+                        alt={'empty cart image'}
+                        width={300}
+                        height={300}
+                    />
+                    <Typography
+                        color={theme.palette.secondary.main}
+                        fontWeight={600}
+                        fontSize={'18px'}
+                    >
+                        {emptyCartLabel}
+                    </Typography>
                 </Box>
             ) : (
                 <>
