@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BiMenuAltLeft } from 'react-icons/bi';
-import { CiSearch } from 'react-icons/ci';
 import { FiShoppingCart } from 'react-icons/fi';
 import { FiPower } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -10,7 +9,7 @@ import { RiUser3Line } from 'react-icons/ri';
 import { TbClipboardList } from 'react-icons/tb';
 
 import { auth } from '@/config';
-import { SearchBar } from '@/features/groceries-search';
+import { SearchBar, SearchButton } from '@/features/groceries-search';
 import { theme } from '@/styles/theme';
 import {
     AppBar,
@@ -23,7 +22,6 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 type PageItem = {
@@ -62,6 +60,8 @@ export const ResponsiveAppBar: React.FC = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
 
+    const titleLabel = 'כותרת גדולה';
+    const welcomeBackLabel = 'ברוך שובך';
     const logoutButtonLabel = 'התנתק';
 
     const handleLogout = useCallback(async () => {
@@ -79,18 +79,7 @@ export const ResponsiveAppBar: React.FC = () => {
                 >
                     {!showSearch && (
                         <>
-                            <IconButton
-                                sx={{
-                                    display: { xs: 'flex', sm: 'none' },
-                                    padding: 0,
-                                }}
-                                onClick={() => setShowSearch(true)}
-                            >
-                                <CiSearch
-                                    color={theme.palette.primary.main}
-                                    size={24}
-                                />
-                            </IconButton>
+                            <SearchButton onClick={() => setShowSearch(true)} />
 
                             <Typography
                                 variant={'h6'}
@@ -101,7 +90,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                 fontWeight={800}
                                 sx={{ textDecoration: 'none' }}
                             >
-                                כותרת גדולה
+                                {titleLabel}
                             </Typography>
                         </>
                     )}
@@ -172,12 +161,7 @@ export const ResponsiveAppBar: React.FC = () => {
                     >
                         {!showSearch && (
                             <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
                                 onClick={() => setOpenMenu((value) => !value)}
-                                color="inherit"
                                 sx={{ padding: 0 }}
                             >
                                 <BiMenuAltLeft
@@ -205,7 +189,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                     color={'primary'}
                                     fontWeight={800}
                                 >
-                                    כותרת גדולה
+                                    {titleLabel}
                                 </Typography>
                                 <IconButton onClick={() => setOpenMenu(false)}>
                                     <AiOutlineCloseCircle
@@ -228,7 +212,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                         fontSize={'14px'}
                                         fontWeight={400}
                                     >
-                                        ברוך שובך
+                                        {welcomeBackLabel}
                                     </Typography>
                                     <Typography
                                         color={'primary'}
