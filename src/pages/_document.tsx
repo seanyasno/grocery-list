@@ -4,6 +4,7 @@ export default function Document() {
     return (
         <Html lang="en" dir={'rtl'}>
             <Head>
+                {/* eslint-disable-next-line @next/next/no-title-in-document-head */}
                 <title>אתר קניות</title>
                 <meta
                     name="description"
