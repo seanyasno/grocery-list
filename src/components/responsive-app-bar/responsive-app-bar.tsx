@@ -1,22 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BiMenuAltLeft } from 'react-icons/bi';
-import { CiSearch } from 'react-icons/ci';
 import { FiShoppingCart } from 'react-icons/fi';
+import { FiPower } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { RiUser3Line } from 'react-icons/ri';
 import { TbClipboardList } from 'react-icons/tb';
 
 import { auth } from '@/config';
-import { SearchBar } from '@/features/groceries-search';
+import { SearchBar, SearchButton } from '@/features/groceries-search';
 import { theme } from '@/styles/theme';
 import {
     AppBar,
     Box,
     Button,
+    Container,
+    Dialog,
     IconButton,
-    Menu,
-    MenuItem,
     Toolbar,
     Typography,
     useMediaQuery,
@@ -57,18 +58,15 @@ export const ResponsiveAppBar: React.FC = () => {
     const [user] = useAuthState(auth);
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
     const [showSearch, setShowSearch] = useState(false);
+    const [openMenu, setOpenMenu] = useState(false);
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-        null
-    );
+    const titleLabel = 'כותרת גדולה';
+    const welcomeBackLabel = 'ברוך שובך';
+    const logoutButtonLabel = 'התנתק';
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
+    const handleLogout = useCallback(async () => {
+        await auth.signOut();
+    }, []);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -81,18 +79,7 @@ export const ResponsiveAppBar: React.FC = () => {
                 >
                     {!showSearch && (
                         <>
-                            <IconButton
-                                sx={{
-                                    display: { xs: 'flex', sm: 'none' },
-                                    padding: 0,
-                                }}
-                                onClick={() => setShowSearch(true)}
-                            >
-                                <CiSearch
-                                    color={theme.palette.primary.main}
-                                    size={24}
-                                />
-                            </IconButton>
+                            <SearchButton onClick={() => setShowSearch(true)} />
 
                             <Typography
                                 variant={'h6'}
@@ -103,7 +90,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                 fontWeight={800}
                                 sx={{ textDecoration: 'none' }}
                             >
-                                כותרת גדולה
+                                {titleLabel}
                             </Typography>
                         </>
                     )}
@@ -139,7 +126,6 @@ export const ResponsiveAppBar: React.FC = () => {
                             return (
                                 <React.Fragment key={index}>
                                     <Button
-                                        onClick={handleCloseNavMenu}
                                         variant={'text'}
                                         sx={{
                                             my: 2,
@@ -175,12 +161,7 @@ export const ResponsiveAppBar: React.FC = () => {
                     >
                         {!showSearch && (
                             <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
+                                onClick={() => setOpenMenu((value) => !value)}
                                 sx={{ padding: 0 }}
                             >
                                 <BiMenuAltLeft
@@ -189,35 +170,120 @@ export const ResponsiveAppBar: React.FC = () => {
                             </IconButton>
                         )}
 
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
+                        <Dialog
+                            open={openMenu}
+                            fullScreen={true}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                zIndex: 99999,
                             }}
                         >
-                            {pages.map(({ title }, index) => (
-                                <MenuItem
-                                    key={index}
-                                    onClick={handleCloseNavMenu}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    padding: '30px 10px 30px 20px',
+                                }}
+                            >
+                                <Typography
+                                    fontSize={'28px'}
+                                    color={'primary'}
+                                    fontWeight={800}
                                 >
-                                    <Typography textAlign="center">
-                                        {title}
+                                    {titleLabel}
+                                </Typography>
+                                <IconButton onClick={() => setOpenMenu(false)}>
+                                    <AiOutlineCloseCircle
+                                        color={theme.palette.primary.main}
+                                        size={24}
+                                    />
+                                </IconButton>
+                            </Box>
+
+                            {user && (
+                                <Container
+                                    sx={{
+                                        backgroundColor:
+                                            theme.palette.secondary.main,
+                                        padding: '14px 20px',
+                                    }}
+                                >
+                                    <Typography
+                                        color={theme.palette.info.main}
+                                        fontSize={'14px'}
+                                        fontWeight={400}
+                                    >
+                                        {welcomeBackLabel}
                                     </Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                                    <Typography
+                                        color={'primary'}
+                                        fontSize={'20px'}
+                                        fontWeight={600}
+                                    >
+                                        {user?.displayName}!
+                                    </Typography>
+                                </Container>
+                            )}
+
+                            <Container
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    marginTop: '14px',
+                                }}
+                            >
+                                {pages.map(({ title, href, icon }, index) => {
+                                    if (title === 'התחברות' && user) {
+                                        return <React.Fragment key={index} />;
+                                    }
+
+                                    return (
+                                        <Button
+                                            key={index}
+                                            variant={'text'}
+                                            sx={{
+                                                my: 1,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                columnGap: '8px',
+                                            }}
+                                            href={href}
+                                        >
+                                            {icon}
+                                            {title}
+                                        </Button>
+                                    );
+                                })}
+                            </Container>
+
+                            {user && (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flex: 1,
+                                        alignItems: 'flex-end',
+                                        padding: '18px',
+                                    }}
+                                >
+                                    <Button
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            columnGap: '8px',
+                                        }}
+                                        onClick={handleLogout}
+                                    >
+                                        <FiPower
+                                            color={theme.palette.primary.main}
+                                            size={20}
+                                        />
+                                        <Typography color={'primary'}>
+                                            {logoutButtonLabel}
+                                        </Typography>
+                                    </Button>
+                                </Box>
+                            )}
+                        </Dialog>
                     </Box>
                 </Toolbar>
             </AppBar>

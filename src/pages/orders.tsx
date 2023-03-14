@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { NextPage } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { Footer, LoadingPage, ResponsiveAppBar } from '@/components';
@@ -10,20 +11,29 @@ import { PreviousOrdersList, SavedOrdersList } from '@/features/orders';
 import { useGroceryByBarcode, useUser } from '@/hooks';
 import { theme } from '@/styles/theme';
 import { Box, Tab, Tabs } from '@mui/material';
+import { isEmpty } from 'lodash';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { ClipLoader } from 'react-spinners';
 
 const OrdersPage: NextPage = () => {
     const [currentTab, setCurrentTab] = useState(0);
-    const [user, loading] = useAuthState(auth);
-    const [userData] = useUser('8YAcs0WvWQMCr0ki6F9QYXNDNvG3');
+    const [user, loadingUser] = useAuthState(auth);
+    const [userData] = useUser(user?.uid);
 
-    const { data: groceries } = useGroceryByBarcode(
-        userData?.favoriteGroceries
-    );
+    const { data: groceries, isLoading: loadingGroceries } =
+        useGroceryByBarcode(userData?.favoriteGroceries);
 
     const router = useRouter();
 
-    if (loading && !user) {
+    const loadingFavoriteGroceries = useMemo(() => {
+        if (userData && isEmpty(userData?.favoriteGroceries)) {
+            return false;
+        }
+
+        return loadingGroceries || loadingUser;
+    }, [userData, loadingGroceries, loadingUser]);
+
+    if (loadingUser && !user) {
         return <LoadingPage />;
     } else if (!user) {
         router.replace('/');
@@ -76,6 +86,32 @@ const OrdersPage: NextPage = () => {
                         {groceries && (
                             <SavedOrdersList savedGroceries={groceries} />
                         )}
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: '100%',
+                            }}
+                        >
+                            {loadingFavoriteGroceries ? (
+                                <ClipLoader
+                                    color={theme.palette.primary.main}
+                                    size={150}
+                                />
+                            ) : (
+                                (isEmpty(userData?.favoriteGroceries) ||
+                                    groceries?.length === 0) && (
+                                    <Image
+                                        alt={'empty favorites'}
+                                        src={'./svgs/undraw_empty_re_opql.svg'}
+                                        height={300}
+                                        width={300}
+                                    />
+                                )
+                            )}
+                        </Box>
                     </div>
                     <div
                         hidden={currentTab !== 1}
