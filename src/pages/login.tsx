@@ -123,10 +123,11 @@ const Login: NextPage = () => {
                         width={'100%'}
                         padding={'40px 20px'}
                     >
-                        <Title>{title}</Title>
+                        <Title variant={'h1'}>{title}</Title>
                         <Grid container columnSpacing={2} rowSpacing={2}>
                             <Grid item xs={12}>
                                 <FilledTextField
+                                    id={'email-mobile-field'}
                                     name={'email'}
                                     value={values.email}
                                     onChange={handleChange}
@@ -135,10 +136,12 @@ const Login: NextPage = () => {
                                     label={emailLabel}
                                     fullWidth
                                     InputProps={{ disableUnderline: true }}
+                                    helperText={errors.email}
                                 />
                             </Grid>
                             <Grid item xs={12} textAlign={'right'}>
                                 <FilledTextField
+                                    id={'password-mobile-field'}
                                     name={'password'}
                                     value={values.password}
                                     onChange={handleChange}
@@ -148,6 +151,7 @@ const Login: NextPage = () => {
                                     label={passwordLabel}
                                     fullWidth
                                     InputProps={{ disableUnderline: true }}
+                                    helperText={errors.password}
                                 />
                                 <Button
                                     variant={'text'}
