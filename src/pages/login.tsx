@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { NextPage } from 'next';
+import Head from 'next/head';
 
 import { LoadingPage } from '@/components';
 import {
@@ -18,6 +19,7 @@ import { theme } from '@/styles/theme';
 import { Button, Grid, Stack } from '@mui/material';
 
 const Login: NextPage = () => {
+    const pageTitle = 'דף התחברות של אתר קניות';
     const title = 'התחברות';
     const loginButtonLabel = 'התחבר';
     const forgotPasswordButtonLabel = 'שכחת סיסמה?';
@@ -40,16 +42,86 @@ const Login: NextPage = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Background>
-                <FormCard>
+        <>
+            <Head>
+                <title>{pageTitle}</title>
+            </Head>
+            <form onSubmit={handleSubmit}>
+                <Background>
+                    <FormCard>
+                        <Stack
+                            display={{
+                                xs: 'none',
+                                md: 'flex',
+                            }}
+                            width={'50%'}
+                            margin={'auto 0'}
+                        >
+                            <Title variant={'h1'}>{title}</Title>
+                            <Grid container columnSpacing={2} rowSpacing={2}>
+                                <Grid item xs={12}>
+                                    <FilledTextField
+                                        id={'email-field'}
+                                        name={'email'}
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        error={!!errors.email}
+                                        variant={'filled'}
+                                        label={emailLabel}
+                                        fullWidth
+                                        InputProps={{ disableUnderline: true }}
+                                        helperText={errors.email}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} textAlign={'right'}>
+                                    <FilledTextField
+                                        id={'password-field'}
+                                        name={'password'}
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        error={!!errors.password}
+                                        type={'password'}
+                                        variant={'filled'}
+                                        label={passwordLabel}
+                                        fullWidth
+                                        InputProps={{ disableUnderline: true }}
+                                        helperText={errors.password}
+                                    />
+                                    <Button
+                                        variant={'text'}
+                                        sx={{ color: 'white' }}
+                                    >
+                                        {forgotPasswordButtonLabel}
+                                    </Button>
+                                </Grid>
+                            </Grid>
+
+                            <SubmitButton
+                                type={'submit'}
+                                variant={'contained'}
+                                color={'secondary'}
+                            >
+                                {loginButtonLabel}
+                            </SubmitButton>
+
+                            <BottomSection
+                                topLabel={'או התחבר עם'}
+                                bottomLabel={'אין לך חשבון?'}
+                                bottomLinkLabel={'הירשם כעת'}
+                                href={'/register'}
+                            >
+                                <SocialButtons />
+                            </BottomSection>
+                        </Stack>
+                    </FormCard>
+
                     <Stack
                         display={{
-                            xs: 'none',
-                            md: 'flex',
+                            xs: 'flex',
+                            md: 'none',
                         }}
-                        width={'50%'}
-                        margin={'auto 0'}
+                        width={'100%'}
+                        padding={'40px 20px'}
                     >
                         <Title>{title}</Title>
                         <Grid container columnSpacing={2} rowSpacing={2}>
@@ -89,7 +161,10 @@ const Login: NextPage = () => {
                         <SubmitButton
                             type={'submit'}
                             variant={'contained'}
-                            color={'secondary'}
+                            color={'primary'}
+                            sx={{
+                                color: 'white',
+                            }}
                         >
                             {loginButtonLabel}
                         </SubmitButton>
@@ -99,76 +174,15 @@ const Login: NextPage = () => {
                             bottomLabel={'אין לך חשבון?'}
                             bottomLinkLabel={'הירשם כעת'}
                             href={'/register'}
+                            labelColor={'white'}
+                            bottomLinkColor={theme.palette.primary.main}
                         >
                             <SocialButtons />
                         </BottomSection>
                     </Stack>
-                </FormCard>
-
-                <Stack
-                    display={{
-                        xs: 'flex',
-                        md: 'none',
-                    }}
-                    width={'100%'}
-                    padding={'40px 20px'}
-                >
-                    <Title>{title}</Title>
-                    <Grid container columnSpacing={2} rowSpacing={2}>
-                        <Grid item xs={12}>
-                            <FilledTextField
-                                name={'email'}
-                                value={values.email}
-                                onChange={handleChange}
-                                error={!!errors.email}
-                                variant={'filled'}
-                                label={emailLabel}
-                                fullWidth
-                                InputProps={{ disableUnderline: true }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} textAlign={'right'}>
-                            <FilledTextField
-                                name={'password'}
-                                value={values.password}
-                                onChange={handleChange}
-                                error={!!errors.password}
-                                type={'password'}
-                                variant={'filled'}
-                                label={passwordLabel}
-                                fullWidth
-                                InputProps={{ disableUnderline: true }}
-                            />
-                            <Button variant={'text'} sx={{ color: 'white' }}>
-                                {forgotPasswordButtonLabel}
-                            </Button>
-                        </Grid>
-                    </Grid>
-
-                    <SubmitButton
-                        type={'submit'}
-                        variant={'contained'}
-                        color={'primary'}
-                        sx={{
-                            color: 'white',
-                        }}
-                    >
-                        {loginButtonLabel}
-                    </SubmitButton>
-
-                    <BottomSection
-                        topLabel={'או התחבר עם'}
-                        bottomLabel={'אין לך חשבון?'}
-                        bottomLinkLabel={'הירשם כעת'}
-                        href={'/register'}
-                        labelColor={'white'}
-                        bottomLinkColor={theme.palette.primary.main}
-                    >
-                        <SocialButtons />
-                    </BottomSection>
-                </Stack>
-            </Background>
-        </form>
+                </Background>
+            </form>
+        </>
     );
 };
 
