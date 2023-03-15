@@ -17,6 +17,7 @@ import {
     Button,
     Container,
     Dialog,
+    DialogTitle,
     IconButton,
     Toolbar,
     Typography,
@@ -181,6 +182,7 @@ export const ResponsiveAppBar: React.FC = () => {
                                 zIndex: 99999,
                             }}
                         >
+                            <DialogTitle hidden>תפריט ניווט</DialogTitle>
                             <Box
                                 sx={{
                                     display: 'flex',

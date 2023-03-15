@@ -7,7 +7,14 @@ import { TiDelete } from 'react-icons/ti';
 import { GroceryItemCard } from '@/features/grocery-item';
 import { useBestGroceryPrice, useGroceryOptions } from '@/hooks';
 import { theme } from '@/styles/theme';
-import { Autocomplete, Box, Dialog, IconButton, Popper } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Dialog,
+    DialogTitle,
+    IconButton,
+    Popper,
+} from '@mui/material';
 import { isEmpty } from 'lodash';
 import { PropagateLoader, PuffLoader } from 'react-spinners';
 
@@ -140,6 +147,9 @@ export const SearchBar: React.FC<Props> = (props) => {
                     },
                 }}
             >
+                <DialogTitle hidden>
+                    כרטייסת מוצר של {selectedGrocery?.name}
+                </DialogTitle>
                 <GroceryItemCard
                     grocery={{
                         id: selectedGrocery?.id,
