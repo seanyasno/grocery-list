@@ -42,17 +42,19 @@ export const SearchBar: React.FC<Props> = (props) => {
     return (
         <>
             <Search ref={searchFieldRef} fullWidth={fullWidth}>
-                <SearchIconWrapper>
+                <SearchIconWrapper id={'search-icon'}>
                     {!isEmpty(groceryName) &&
                     isLoadingBestGrocery &&
                     !isLoadingOptions &&
                     !isEmpty(selectedGrocery) ? (
                         <PuffLoader
+                            id={'search-icon-loader'}
                             color={theme.palette.primary.main}
                             size={18}
                         />
                     ) : (
                         <CiSearch
+                            id={'search-icon-unique'}
                             color={theme.palette.primary.main}
                             size={20}
                         />

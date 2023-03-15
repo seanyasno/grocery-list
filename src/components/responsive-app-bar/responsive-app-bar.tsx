@@ -82,14 +82,15 @@ export const ResponsiveAppBar: React.FC = () => {
                             <SearchButton onClick={() => setShowSearch(true)} />
 
                             <Typography
-                                variant={'h1'}
                                 fontSize={'20px'}
                                 noWrap
                                 component={'a'}
                                 href={'/'}
                                 color={'primary'}
                                 fontWeight={800}
-                                sx={{ textDecoration: 'none' }}
+                                sx={{
+                                    textDecoration: 'none',
+                                }}
                             >
                                 {titleLabel}
                             </Typography>
