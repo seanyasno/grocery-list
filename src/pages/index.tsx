@@ -14,7 +14,6 @@ import { GroceriesCardsList } from '@/features/grocery-item';
 import { LiveBillCard } from '@/features/live-bill';
 import { useUser } from '@/hooks';
 import { fetchGrocery } from '@/requests/chp-requests/chp-requests';
-import styles from '@/styles/Home.module.css';
 import { theme } from '@/styles/theme';
 import { groceryRequestFormatter } from '@/utils';
 import { Box, Dialog, Grid, IconButton, Typography } from '@mui/material';
