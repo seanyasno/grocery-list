@@ -38,6 +38,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                     nl_pos = "bl";
                     nl_compact = "1";
                     nl_accordion = "1";
+                    nl_link = "/accessibility";
                 `}
             </Script>
             <Script src={'/scripts/nagishli.js'} />
