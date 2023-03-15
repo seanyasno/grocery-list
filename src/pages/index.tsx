@@ -172,6 +172,11 @@ const HomePage: NextPage<Props> = (props) => {
                         </Box>
 
                         <IconButton
+                            aria-label={
+                                openBill
+                                    ? 'סיגרת עגלת קניות'
+                                    : 'פתיחת עגלת קניות'
+                            }
                             sx={{
                                 position: 'fixed',
                                 left: 0,
