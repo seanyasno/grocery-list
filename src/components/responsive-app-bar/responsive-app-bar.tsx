@@ -163,6 +163,7 @@ export const ResponsiveAppBar: React.FC = () => {
                     >
                         {!showSearch && (
                             <IconButton
+                                aria-label={'פתיחת תפריט ניווט'}
                                 onClick={() => setOpenMenu((value) => !value)}
                                 sx={{ padding: 0 }}
                             >
@@ -173,6 +174,7 @@ export const ResponsiveAppBar: React.FC = () => {
                         )}
 
                         <Dialog
+                            title={'תפריט ניווט'}
                             open={openMenu}
                             fullScreen={true}
                             sx={{
@@ -193,7 +195,10 @@ export const ResponsiveAppBar: React.FC = () => {
                                 >
                                     {titleLabel}
                                 </Typography>
-                                <IconButton onClick={() => setOpenMenu(false)}>
+                                <IconButton
+                                    aria-label={'סגירת עגלת קניות'}
+                                    onClick={() => setOpenMenu(false)}
+                                >
                                     <AiOutlineCloseCircle
                                         color={theme.palette.primary.main}
                                         size={24}

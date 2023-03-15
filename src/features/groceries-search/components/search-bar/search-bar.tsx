@@ -41,7 +41,7 @@ export const SearchBar: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Search ref={searchFieldRef} fullWidth={fullWidth}>
+            <Search role={'search'} ref={searchFieldRef} fullWidth={fullWidth}>
                 <SearchIconWrapper id={'search-icon'}>
                     {!isEmpty(groceryName) &&
                     isLoadingBestGrocery &&

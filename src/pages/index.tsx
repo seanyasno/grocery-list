@@ -16,7 +16,14 @@ import { useUser } from '@/hooks';
 import { fetchGrocery } from '@/requests/chp-requests/chp-requests';
 import { theme } from '@/styles/theme';
 import { groceryRequestFormatter } from '@/utils';
-import { Box, Dialog, Grid, IconButton, Typography } from '@mui/material';
+import {
+    Box,
+    Dialog,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Typography,
+} from '@mui/material';
 import { isEmpty } from 'lodash';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -188,6 +195,9 @@ const HomePage: NextPage<Props> = (props) => {
                         </IconButton>
 
                         <Dialog open={openBill} fullScreen>
+                            <DialogTitle hidden>
+                                רשימת מוצרים של עגלת קניות
+                            </DialogTitle>
                             <Box
                                 sx={{
                                     padding: '20px',
