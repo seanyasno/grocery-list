@@ -7,7 +7,7 @@ import { Footer, ResponsiveAppBar } from '@/components';
 import { ShoppingCartProvider } from '@/contexts';
 import { CheckoutList, LeftSection } from '@/features/checkout';
 import { theme } from '@/styles/theme';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 const CheckoutPage: NextPage = () => {
     const pageTitle = 'דף קניות של אתר קניות';
@@ -17,6 +17,20 @@ const CheckoutPage: NextPage = () => {
             <Head>
                 <title>{pageTitle}</title>
             </Head>
+
+            <Typography
+                variant={'h1'}
+                sx={{
+                    position: 'absolute',
+                    top: '-9999px',
+                    left: '-9999px',
+                    width: '1px',
+                    height: '1px',
+                }}
+            >
+                {pageTitle}
+            </Typography>
+
             <ShoppingCartProvider>
                 <ResponsiveAppBar />
                 <Grid
