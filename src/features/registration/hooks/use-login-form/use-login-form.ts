@@ -21,15 +21,15 @@ export const useLoginForm = () => {
             const errors: Partial<LoginInfo> = {};
 
             if (!email) {
-                errors.email = 'Required';
+                errors.email = 'שדה ריק';
             } else if (
                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
             ) {
-                errors.email = 'Invalid email address';
+                errors.email = 'כתובת אימייל אינה תקינה';
             }
 
             if (!password) {
-                errors.password = 'Required';
+                errors.password = 'שדה ריק';
             }
 
             return errors;

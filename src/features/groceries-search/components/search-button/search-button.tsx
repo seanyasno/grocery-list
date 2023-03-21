@@ -14,6 +14,7 @@ export const SearchButton: React.FC<Props> = (props) => {
 
     return (
         <IconButton
+            aria-label={'פתח חיפוש'}
             sx={{
                 display: { xs: 'flex', sm: 'none' },
                 padding: 0,
