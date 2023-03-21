@@ -29,7 +29,7 @@ export const GroceryCategoryItem: React.FC<Props> = (props) => {
 
     return (
         <Box>
-            <StyledIconButton>
+            <StyledIconButton aria-label={`כפתור של קטגוריית ${name}`}>
                 <Image
                     src={imageSrc}
                     alt={name}

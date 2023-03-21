@@ -57,6 +57,7 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
                 {user && (
                     <FavoriteButton
                         groceryId={grocery.id}
+                        name={grocery.name}
                         color={'primary'}
                         size={24}
                         sx={{ margin: '6px' }}
@@ -67,14 +68,14 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
             <BottomSectionGrid container>
                 <InfoGrid item xs={12}>
                     <Typography
-                        variant={'h6'}
+                        fontSize={'18px'}
                         display={'inline'}
                         fontWeight={400}
                     >
                         {grocery.name}
                     </Typography>
                     <Typography
-                        variant={'h6'}
+                        fontSize={'18px'}
                         display={'inline'}
                         fontWeight={600}
                         color={'primary'}
@@ -85,19 +86,26 @@ export const GroceryItemCard: React.FC<Props> = (props) => {
 
                 <Grid item xs={12} sm={6}>
                     <StyledAmount>
-                        <IconButton onClick={handleIncrease}>
+                        <IconButton
+                            aria-label={`הגדל את הכמות של ${grocery.name} ב 1`}
+                            onClick={handleIncrease}
+                        >
                             <BiPlus color={'white'}>+</BiPlus>
                         </IconButton>
-                        <Typography variant={'h6'} color={'secondary'}>
+                        <Typography fontSize={'20px'} color={'secondary'}>
                             {amountToAdd}
                         </Typography>
-                        <IconButton onClick={handleDecrease}>
+                        <IconButton
+                            aria-label={`הקטן את הכמות של ${grocery.name} ב 1`}
+                            onClick={handleDecrease}
+                        >
                             <BiMinus color={'white'}>-</BiMinus>
                         </IconButton>
                     </StyledAmount>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <AddToCartButton
+                        aria-label={`הוסף ${grocery.name} לעגלת קניות`}
                         variant={'contained'}
                         fullWidth
                         onClick={handleAddToCart}

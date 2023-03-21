@@ -59,37 +59,37 @@ export const useRegisterForm = () => {
                 values;
 
             if (isEmpty(fullName)) {
-                errors.fullName = 'Required';
+                errors.fullName = 'שדה ריק';
             }
 
             if (isEmpty(city)) {
-                errors.city = 'Required';
+                errors.city = 'שדה ריק';
             }
 
             if (isEmpty(email)) {
-                errors.email = 'Required';
+                errors.email = 'שדה ריק';
             } else if (
                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
             ) {
-                errors.email = 'Invalid email address';
+                errors.email = 'כתובת אימייל אינה תקינה';
             }
 
             if (isEmpty(password)) {
-                errors.password = 'Required';
+                errors.password = 'שדה ריק';
             }
 
             if (isEmpty(phoneNumber)) {
-                errors.phoneNumber = 'Required';
+                errors.phoneNumber = 'שדה ריק';
             } else if (
                 !/^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/i.test(
                     phoneNumber
                 )
             ) {
-                errors.phoneNumber = 'Invalid phone number';
+                errors.phoneNumber = 'מספר פלאפון לא תקין';
             }
 
             if (isEmpty(street)) {
-                errors.street = 'Required';
+                errors.street = 'שדה ריק';
             }
 
             return errors;

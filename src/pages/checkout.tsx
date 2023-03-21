@@ -1,20 +1,36 @@
 import React from 'react';
 
 import { NextPage } from 'next';
+import Head from 'next/head';
 
 import { Footer, ResponsiveAppBar } from '@/components';
 import { ShoppingCartProvider } from '@/contexts';
-import {
-    CheckoutList,
-    OrderSummary,
-    PriceComparison,
-} from '@/features/checkout';
+import { CheckoutList, LeftSection } from '@/features/checkout';
 import { theme } from '@/styles/theme';
-import { Box, Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 const CheckoutPage: NextPage = () => {
+    const pageTitle = 'דף קניות של אתר קניות';
+
     return (
-        <div>
+        <>
+            <Head>
+                <title>{pageTitle}</title>
+            </Head>
+
+            <Typography
+                variant={'h1'}
+                sx={{
+                    position: 'absolute',
+                    top: '-9999px',
+                    left: '-9999px',
+                    width: '1px',
+                    height: '1px',
+                }}
+            >
+                {pageTitle}
+            </Typography>
+
             <ShoppingCartProvider>
                 <ResponsiveAppBar />
                 <Grid
@@ -39,24 +55,11 @@ const CheckoutPage: NextPage = () => {
                     >
                         <CheckoutList />
                     </Grid>
-                    <Grid
-                        item
-                        maxWidth={'433px'}
-                        width={'100%'}
-                        order={{
-                            xs: 1,
-                            md: 2,
-                        }}
-                    >
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <PriceComparison />
-                        </Box>
-                        <OrderSummary vatRate={17} />
-                    </Grid>
+                    <LeftSection />
                 </Grid>
             </ShoppingCartProvider>
             <Footer />
-        </div>
+        </>
     );
 };
 

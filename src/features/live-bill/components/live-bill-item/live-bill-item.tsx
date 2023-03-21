@@ -107,6 +107,7 @@ export const LiveBillItem: React.FC<Props> = (props) => {
                         }}
                     >
                         <IconButton
+                            aria-label={`מחק ${cartItem.grocery.name} מהעגלת קניות`}
                             sx={{
                                 padding: 0,
                             }}

@@ -50,7 +50,7 @@ export const FilledTextField = styled(TextField)`
     & .MuiInputBase-root,
     .MuiInputBase-root.Mui-focused {
         background-color: #feb74a;
-        color: #fff;
+        color: #000;
         font-size: 16px;
         border-radius: 6px;
         border-bottom: none;
@@ -70,6 +70,7 @@ export const Title = styled(Typography)`
     color: #fff;
     font-size: 44px;
     margin-bottom: 18px;
+    font-weight: 400;
 
     ${theme.breakpoints.down('md')} {
         font-size: 24px;

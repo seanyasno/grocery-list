@@ -70,6 +70,8 @@ export const LiveBillCard: React.FC<Props> = (props) => {
     const router = useRouter();
 
     const buttonLabel = 'ללכת לעגלה';
+    const closeLabel = 'סגירת חשבון עגלת קניות';
+    const openLabel = 'פתיחת חשבון עגלת קניות';
 
     return (
         <Box
@@ -79,7 +81,11 @@ export const LiveBillCard: React.FC<Props> = (props) => {
             }}
         >
             {showExpandButton && (
-                <StyledExpandButton color={'primary'} onClick={onExpandClick}>
+                <StyledExpandButton
+                    color={'primary'}
+                    onClick={onExpandClick}
+                    aria-label={expanded ? closeLabel : openLabel}
+                >
                     {expanded ? (
                         <IoIosArrowUp size={22} />
                     ) : (

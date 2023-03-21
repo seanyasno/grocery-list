@@ -17,6 +17,7 @@ import {
     Button,
     Container,
     Dialog,
+    DialogTitle,
     IconButton,
     Toolbar,
     Typography,
@@ -82,13 +83,15 @@ export const ResponsiveAppBar: React.FC = () => {
                             <SearchButton onClick={() => setShowSearch(true)} />
 
                             <Typography
-                                variant={'h6'}
+                                fontSize={'20px'}
                                 noWrap
                                 component={'a'}
                                 href={'/'}
                                 color={'primary'}
                                 fontWeight={800}
-                                sx={{ textDecoration: 'none' }}
+                                sx={{
+                                    textDecoration: 'none',
+                                }}
                             >
                                 {titleLabel}
                             </Typography>
@@ -161,6 +164,7 @@ export const ResponsiveAppBar: React.FC = () => {
                     >
                         {!showSearch && (
                             <IconButton
+                                aria-label={'פתיחת תפריט ניווט'}
                                 onClick={() => setOpenMenu((value) => !value)}
                                 sx={{ padding: 0 }}
                             >
@@ -171,12 +175,14 @@ export const ResponsiveAppBar: React.FC = () => {
                         )}
 
                         <Dialog
+                            title={'תפריט ניווט'}
                             open={openMenu}
                             fullScreen={true}
                             sx={{
                                 zIndex: 99999,
                             }}
                         >
+                            <DialogTitle hidden>תפריט ניווט</DialogTitle>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -191,7 +197,10 @@ export const ResponsiveAppBar: React.FC = () => {
                                 >
                                     {titleLabel}
                                 </Typography>
-                                <IconButton onClick={() => setOpenMenu(false)}>
+                                <IconButton
+                                    aria-label={'סגירת עגלת קניות'}
+                                    onClick={() => setOpenMenu(false)}
+                                >
                                     <AiOutlineCloseCircle
                                         color={theme.palette.primary.main}
                                         size={24}

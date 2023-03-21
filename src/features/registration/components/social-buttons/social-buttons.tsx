@@ -20,11 +20,15 @@ export const SocialButtons: React.FC = () => {
             justifyContent={'center'}
             textAlign={'center'}
         >
-            <SocialIconButton size={'large'}>
+            <SocialIconButton
+                size={'large'}
+                aria-label={'login with facebook button'}
+            >
                 <FaFacebook color={'#1877F2'} />
             </SocialIconButton>
             <SocialIconButton
                 size={'large'}
+                aria-label={'login with google button'}
                 onClick={async () => {
                     try {
                         const user = await signInWithGoogle();
@@ -50,7 +54,10 @@ export const SocialButtons: React.FC = () => {
             >
                 <FcGoogle />
             </SocialIconButton>
-            <SocialIconButton size={'large'}>
+            <SocialIconButton
+                size={'large'}
+                aria-label={'login with apple button'}
+            >
                 <FaApple color={'#000'} />
             </SocialIconButton>
         </Stack>

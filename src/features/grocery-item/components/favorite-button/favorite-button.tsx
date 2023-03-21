@@ -9,6 +9,7 @@ import { OverridableStringUnion } from '@mui/types';
 
 type Props = {
     groceryId: string;
+    name: string;
     color?: OverridableStringUnion<
         | 'inherit'
         | 'default'
@@ -25,7 +26,7 @@ type Props = {
 };
 
 export const FavoriteButton: React.FC<Props> = (props) => {
-    const { groceryId, color, size, sx } = props;
+    const { groceryId, name, color, size, sx } = props;
     const { isFavoriteGrocery, addFavoriteGrocery, removeFavoriteGrocery } =
         useContext(FavoriteGroceriesContext);
 
@@ -34,8 +35,14 @@ export const FavoriteButton: React.FC<Props> = (props) => {
         [groceryId, isFavoriteGrocery]
     );
 
+    const addToFavoriteLabel = `הוסף ${name} למועדפים`;
+    const removeFromFavoriteLabel = `הסר ${name} ממועדפים`;
+
     return (
         <IconButton
+            aria-label={
+                isFavorite ? addToFavoriteLabel : removeFromFavoriteLabel
+            }
             color={color}
             sx={sx}
             onClick={() => {

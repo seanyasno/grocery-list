@@ -10,7 +10,7 @@ import { FavoriteGroceriesProvider } from '@/contexts';
 import { PreviousOrdersList, SavedOrdersList } from '@/features/orders';
 import { useGroceryByBarcode, useUser } from '@/hooks';
 import { theme } from '@/styles/theme';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ClipLoader } from 'react-spinners';
@@ -24,6 +24,8 @@ const OrdersPage: NextPage = () => {
         useGroceryByBarcode(userData?.favoriteGroceries);
 
     const router = useRouter();
+
+    const pageTitle = 'דף הזמנות של אתר קניות';
 
     const loadingFavoriteGroceries = useMemo(() => {
         if (userData && isEmpty(userData?.favoriteGroceries)) {
@@ -40,7 +42,19 @@ const OrdersPage: NextPage = () => {
     }
 
     return (
-        <Box>
+        <>
+            <Typography
+                variant={'h1'}
+                sx={{
+                    position: 'absolute',
+                    top: '-9999px',
+                    left: '-9999px',
+                    width: '1px',
+                    height: '1px',
+                }}
+            >
+                {pageTitle}
+            </Typography>
             <FavoriteGroceriesProvider
                 uid={user?.uid}
                 initialFavoriteGroceriesIds={userData?.favoriteGroceries}
@@ -61,7 +75,7 @@ const OrdersPage: NextPage = () => {
                             onChange={(event, newValue) => {
                                 setCurrentTab(newValue);
                             }}
-                            aria-label="basic tabs example"
+                            aria-label={'טאבים להזמנות ומוצרים'}
                         >
                             <Tab
                                 value={0}
@@ -78,6 +92,9 @@ const OrdersPage: NextPage = () => {
                         </Tabs>
                     </Box>
                     <div
+                        role={'tabpanel'}
+                        id={`simple-tabpanel-0`}
+                        aria-labelledby={`simple-tab-0`}
                         hidden={currentTab !== 0}
                         style={{
                             paddingTop: '30px',
@@ -114,6 +131,9 @@ const OrdersPage: NextPage = () => {
                         </Box>
                     </div>
                     <div
+                        role={'tabpanel'}
+                        id={`simple-tabpanel-1`}
+                        aria-labelledby={`simple-tab-1`}
                         hidden={currentTab !== 1}
                         style={{
                             paddingTop: '30px',
@@ -158,7 +178,7 @@ const OrdersPage: NextPage = () => {
                 </Box>
                 <Footer />
             </FavoriteGroceriesProvider>
-        </Box>
+        </>
     );
 };
 
